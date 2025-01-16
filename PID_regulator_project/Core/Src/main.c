@@ -14,7 +14,8 @@
  */
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
-#include "main.h"
+#include <motor.h>
+#include <main.h>
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -28,7 +29,7 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-
+//#define Motor_Test //prosty test silnika zmieniajacy jego predkosc w zakresie 0->100->0->-100->0
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -39,6 +40,7 @@
 /* Private variables ---------------------------------------------------------*/
 TIM_HandleTypeDef htim2;
 TIM_HandleTypeDef htim3;
+TIM_HandleTypeDef htim21;
 
 /* USER CODE BEGIN PV */
 
@@ -51,15 +53,14 @@ void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_TIM2_Init(void);
 static void MX_TIM3_Init(void);
+static void MX_TIM21_Init(void);
 /* USER CODE BEGIN PFP */
-
-
 
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-
+motor_struct motor_instance;
 /* USER CODE END 0 */
 
 /**
@@ -70,7 +71,7 @@ int main(void)
 {
 
   /* USER CODE BEGIN 1 */
-//HAL_GPIO_WritePin(M1B_GPIO_Port, M1B_Pin, PinState);
+
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -93,32 +94,50 @@ int main(void)
   MX_GPIO_Init();
   MX_TIM2_Init();
   MX_TIM3_Init();
+  MX_TIM21_Init();
   /* USER CODE BEGIN 2 */
-
-	int pwm = 0;
+#ifdef Motor_Test
+	int speed = 0;
 	int direction = cw;
 	int inc_dec = 1;
 	uint32_t timeTick = HAL_GetTick();
+	uint32_t maxTime = 20;
 
 	Cytron_Motor_Init();
-	Cytron_Set_Motor_Direction(direction);
-	Cytron_Set_Motor_Speed(pwm);
+#endif
 
+	uint32_t timeTick = HAL_GetTick();
+	uint32_t maxTime = 20;
+
+	Cytron_Motor_Init();
+	motor_init(&motor_instance, &htim3, &htim21);
+	motor_set_RPM_speed(&motor_instance, 100);
+	pid_init(&(motor_instance.pid_controller), MOTOR_Kp, MOTOR_Ki, MOTOR_Kd, MOTOR_ANTI_WINDUP);
+
+	HAL_TIM_Encoder_Start(&htim3, TIM_CHANNEL_ALL);
+	HAL_TIM_Base_Start_IT(&htim21);
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
 	while (1) {
-		if (HAL_GetTick() - timeTick >= 20) {
+
+//		if (HAL_GetTick() - timeTick >= maxTime) {
+//			timeTick = HAL_GetTick();
+//			motor_set_RPM_speed(&motor_instance, 100);
+//		}
+#ifdef Motor_Test
+		if (HAL_GetTick() - timeTick >= maxTime) {
 
 			timeTick = HAL_GetTick();
 
-			pwm += inc_dec;
-			Cytron_Set_Motor_Speed(pwm);
+			speed += inc_dec;
+			motor_set_RPM_speed(&motor_instance, speed);
 
-			if (pwm >= 100) {
+			if (speed >= 150) {
 				inc_dec = -1;
-			} else if (pwm <= 0) {
+				maxTime = 2000;
+			} else if (speed <= 0) {
 				inc_dec = 1;
 
 				if (direction == cw) {
@@ -128,8 +147,11 @@ int main(void)
 				}
 
 				Cytron_Set_Motor_Direction(direction);
+			} else{
+				maxTime = 20;
 			}
 		}
+#endif
 
     /* USER CODE END WHILE */
 
@@ -198,9 +220,9 @@ static void MX_TIM2_Init(void)
 
   /* USER CODE END TIM2_Init 1 */
   htim2.Instance = TIM2;
-  htim2.Init.Prescaler = 16-1;
+  htim2.Init.Prescaler = 1.6-1;
   htim2.Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim2.Init.Period = 100-1;
+  htim2.Init.Period = 1000-1;
   htim2.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
   htim2.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
   if (HAL_TIM_Base_Init(&htim2) != HAL_OK)
@@ -295,6 +317,51 @@ static void MX_TIM3_Init(void)
 }
 
 /**
+  * @brief TIM21 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_TIM21_Init(void)
+{
+
+  /* USER CODE BEGIN TIM21_Init 0 */
+
+  /* USER CODE END TIM21_Init 0 */
+
+  TIM_ClockConfigTypeDef sClockSourceConfig = {0};
+  TIM_MasterConfigTypeDef sMasterConfig = {0};
+
+  /* USER CODE BEGIN TIM21_Init 1 */
+
+  /* USER CODE END TIM21_Init 1 */
+  htim21.Instance = TIM21;
+  htim21.Init.Prescaler = 1600-1;
+  htim21.Init.CounterMode = TIM_COUNTERMODE_UP;
+  htim21.Init.Period = 1000-1;
+  htim21.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+  htim21.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
+  if (HAL_TIM_Base_Init(&htim21) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sClockSourceConfig.ClockSource = TIM_CLOCKSOURCE_INTERNAL;
+  if (HAL_TIM_ConfigClockSource(&htim21, &sClockSourceConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
+  sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
+  if (HAL_TIMEx_MasterConfigSynchronization(&htim21, &sMasterConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN TIM21_Init 2 */
+
+  /* USER CODE END TIM21_Init 2 */
+
+}
+
+/**
   * @brief GPIO Initialization Function
   * @param None
   * @retval None
@@ -339,7 +406,11 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
-
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim){
+	if (htim->Instance == htim21.Instance) {
+		motor_calculate_speed(&motor_instance);
+	}
+}
 /* USER CODE END 4 */
 
 /**
