@@ -45,3 +45,5 @@ int pid_calculate(pid_struct *pid_data, int setpoint, int process_variable){
 
 	return (int)(p_term + i_term + d_term);									//odpowiedz regulatora
 }
+
+//obsluzyc case gdy PWM=100% a obroty i tak sa za wolne

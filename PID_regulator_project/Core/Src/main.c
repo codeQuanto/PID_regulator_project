@@ -106,26 +106,34 @@ int main(void)
 	Cytron_Motor_Init();
 #endif
 
-	uint32_t timeTick = HAL_GetTick();
-	uint32_t maxTime = 20;
-
 	Cytron_Motor_Init();
 	motor_init(&motor_instance, &htim3, &htim21);
-	motor_set_RPM_speed(&motor_instance, 100);
 	pid_init(&(motor_instance.pid_controller), MOTOR_Kp, MOTOR_Ki, MOTOR_Kd, MOTOR_ANTI_WINDUP);
 
 	HAL_TIM_Encoder_Start(&htim3, TIM_CHANNEL_ALL);
 	HAL_TIM_Base_Start_IT(&htim21);
+
+	int speed_table[] = {50, 100, -100, 10};
+	int i = 0;
+
+	uint32_t timeTick = HAL_GetTick();
+	uint32_t maxTime = 6000;
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
 	while (1) {
 
-//		if (HAL_GetTick() - timeTick >= maxTime) {
-//			timeTick = HAL_GetTick();
-//			motor_set_RPM_speed(&motor_instance, 100);
-//		}
+		if (HAL_GetTick() - timeTick >= maxTime) {
+			timeTick = HAL_GetTick();
+
+			motor_set_RPM_speed(&motor_instance, speed_table[i]);
+			i++;
+
+			if (i >= 4){
+				i = 0;
+			}
+		}
 #ifdef Motor_Test
 		if (HAL_GetTick() - timeTick >= maxTime) {
 

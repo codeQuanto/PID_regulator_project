@@ -16,6 +16,7 @@ void motor_init(motor_struct *motor, TIM_HandleTypeDef *encoder_tim, TIM_HandleT
 	motor->measured_speed = 0;
 	motor->set_speed = 0;
 	motor->actual_PWM = 0;
+	motor->actual_dir = cw;
 
 	//HAL_TIM_Encoder_Start(encoder_tim, TIM_CHANNEL_ALL);
 	//HAL_TIM_Base_Start_IT(interrupt_tim);
@@ -28,9 +29,16 @@ void motor_update_count(motor_struct *motor){
 
 void motor_calculate_speed(motor_struct *motor){
 	motor_update_count(motor);
-	motor->measured_speed = (motor->pulse_count * TIMER_FREQUENCY * SECONDS_IN_MINUTE)/ (motor->resolution);
+	motor->measured_speed = (motor->pulse_count * TIMER_INTERRUPT_FREQUENCY * SECONDS_IN_MINUTE)/ (motor->resolution);
 
 	int output = pid_calculate(&(motor->pid_controller), motor->set_speed, motor->measured_speed);
+
+
+	if (output >= 1000) { //na razie na sztywno 1000 jako maksymalna wartosc PWM
+			output = 1000;
+	} else if (output <= -1000) {
+		output = -1000;
+	}
 
 	motor->actual_PWM += output;
 
@@ -39,7 +47,7 @@ void motor_calculate_speed(motor_struct *motor){
 		Cytron_Set_Motor_Speed(motor->actual_PWM);
 	} else{
 		Cytron_Set_Motor_Direction(ccw);
-		Cytron_Set_Motor_Speed(motor->actual_PWM);
+		Cytron_Set_Motor_Speed(-motor->actual_PWM); //potencjalny problem gdy ta wartosc wykroczy poza zakres uint16_t
 	}
 }
 

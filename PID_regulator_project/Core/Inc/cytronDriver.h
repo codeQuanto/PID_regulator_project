@@ -33,7 +33,7 @@ typedef enum {
 
 
 void Cytron_Set_Motor_Direction(Cytron_Direction direction);
-void Cytron_Set_Motor_Speed(uint8_t speed);
+void Cytron_Set_Motor_Speed(uint16_t speed);
 void Cytron_Motor_Init();
 
 #endif /* INC_CYTRONDRIVER_H_ */

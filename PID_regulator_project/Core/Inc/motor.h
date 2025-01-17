@@ -29,7 +29,7 @@ typedef struct{
 #define ENCODER_RESOLUTION				8 //wynika z hardware'u
 #define TIMER_CONFIGURATION_BOTH_EDGES	4 //ilosc zliczen na jeden impuls
 #define MOTOR_GEAR						120
-#define TIMER_FREQUENCY					10 //Hz
+#define TIMER_INTERRUPT_FREQUENCY					10 //Hz
 #define SECONDS_IN_MINUTE				60
 
 void motor_init(motor_struct *motor, TIM_HandleTypeDef *encoder_tim, TIM_HandleTypeDef *interrupt_tim);

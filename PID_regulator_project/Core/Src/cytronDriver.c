@@ -34,7 +34,7 @@ void Cytron_Set_Motor_Direction(Cytron_Direction direction){
 	}
 }
 
-void Cytron_Set_Motor_Speed(uint8_t speed){
+void Cytron_Set_Motor_Speed(uint16_t speed){
 	//jesli wypelnienie jest wieksze niz maksymalne to przypisuje maksymalna wartosc
 	if (speed >= htim2.Instance->ARR) {
 		speed = htim2.Instance->ARR;

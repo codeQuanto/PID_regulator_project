@@ -19,9 +19,9 @@ typedef struct{
 	int anti_windup_limit;	//anti-windup - ograniczenie czlonu calkujacego
 }pid_struct;
 
-#define MOTOR_Kp 4.8
-#define MOTOR_Ki 0
-#define MOTOR_Kd 0
+#define MOTOR_Kp 1.2
+#define MOTOR_Ki 0.1
+#define MOTOR_Kd 0.2
 #define MOTOR_ANTI_WINDUP 1000
 
 void pid_init(pid_struct *pid_data, float kp_init, float ki_init, float kd_init, int anti_windup_limit_init);
