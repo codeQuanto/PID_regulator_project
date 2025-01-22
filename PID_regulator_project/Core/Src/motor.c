@@ -16,7 +16,6 @@ void motor_init(motor_struct *motor, TIM_HandleTypeDef *encoder_tim, TIM_HandleT
 	motor->measured_speed = 0;
 	motor->set_speed = 0;
 	motor->actual_PWM = 0;
-	motor->actual_dir = cw;
 
 	//HAL_TIM_Encoder_Start(encoder_tim, TIM_CHANNEL_ALL);
 	//HAL_TIM_Base_Start_IT(interrupt_tim);
@@ -56,4 +55,11 @@ void motor_set_RPM_speed(motor_struct *motor, int RPM_speed){
 		pid_reset(&(motor->pid_controller));
 		motor->set_speed = RPM_speed;
 	}
+}
+
+int32_t get_motor_set_speed(motor_struct *motor){
+	return motor->set_speed;
+}
+int32_t get_motor_meausered_speed(motor_struct *motor){
+	return motor->measured_speed;
 }
