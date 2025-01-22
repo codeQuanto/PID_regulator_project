@@ -57,3 +57,10 @@ void motor_set_RPM_speed(motor_struct *motor, int RPM_speed){
 	}
 }
 
+void motor_stop(motor_struct *motor){
+	motor->set_speed = 0;
+	motor->measured_speed = 0;
+	motor->actual_PWM = 0;
+	Cytron_Set_Motor_Speed(0);
+	//pid_reset(&(motor->pid_controller));
+}

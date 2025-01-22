@@ -71,6 +71,8 @@ static void MX_ADC_Init(void);
 motor_struct motor_instance;
 char uart_buffer[100];
 volatile int flag_send_data;
+volatile int flag_turn_on_off = 0;
+volatile uint32_t last_EXTI_interrupt_time = 0;
 uint32_t adc_value = 0;
 int new_speed = 0;
 /* USER CODE END 0 */
@@ -120,6 +122,7 @@ int main(void)
 	Cytron_Motor_Init();
 #endif
 
+
 	Cytron_Motor_Init();
 	motor_init(&motor_instance, &htim3, &htim21);
 	pid_init(&(motor_instance.pid_controller), MOTOR_Kp, MOTOR_Ki, MOTOR_Kd, MOTOR_ANTI_WINDUP);
@@ -140,23 +143,24 @@ int main(void)
   /* USER CODE BEGIN WHILE */
 	while (1) {
 
-		HAL_ADC_Start(&hadc);
-		HAL_ADC_PollForConversion(&hadc, HAL_MAX_DELAY);
-		adc_value = HAL_ADC_GetValue(&hadc);
+		if(flag_turn_on_off != 0){
+			HAL_ADC_Start(&hadc);
+			HAL_ADC_PollForConversion(&hadc, HAL_MAX_DELAY);
+			adc_value = HAL_ADC_GetValue(&hadc);
 
-		if (HAL_GetTick() - timeTick >= maxTime) { //taka testowa funckja ktora zmienia wartosc speed maksymalnie co 1s (bo na arzie szumy z adc)
-			timeTick = HAL_GetTick();
+			if (HAL_GetTick() - timeTick >= maxTime) { //taka testowa funckja ktora zmienia wartosc speed maksymalnie co 1s (bo na arzie szumy z adc)
+				timeTick = HAL_GetTick();
 
-			new_speed = (adc_value * 300) / 4095 - 150; //zmiana odczytu adc na zakres <-150,-150>
-			motor_set_RPM_speed(&motor_instance, new_speed);
+				new_speed = (adc_value * 300) / 4095 - 150; //zmiana odczytu adc na zakres <-150,-150>
+				motor_set_RPM_speed(&motor_instance, new_speed);
+			}
+
+			if (flag_send_data) {
+				flag_send_data = 0;
+				HAL_UART_Transmit(&huart2, (uint8_t*) uart_buffer,
+						strlen(uart_buffer), HAL_MAX_DELAY);
+			}
 		}
-
-		if (flag_send_data) {
-			flag_send_data = 0;
-			HAL_UART_Transmit(&huart2, (uint8_t*) uart_buffer,
-					strlen(uart_buffer), HAL_MAX_DELAY);
-		}
-
 
 #ifdef Motor_Test
 		if (HAL_GetTick() - timeTick >= maxTime) {
@@ -523,18 +527,47 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(LD2_GPIO_Port, &GPIO_InitStruct);
 
+  /* EXTI interrupt init*/
+  HAL_NVIC_SetPriority(EXTI4_15_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(EXTI4_15_IRQn);
+
 /* USER CODE BEGIN MX_GPIO_Init_2 */
 /* USER CODE END MX_GPIO_Init_2 */
 }
 
 /* USER CODE BEGIN 4 */
-void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim){
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
 	if (htim->Instance == htim21.Instance) {
-		motor_calculate_speed(&motor_instance);
+		if (flag_turn_on_off == 1) {
+			motor_calculate_speed(&motor_instance);
 
-		snprintf(uart_buffer, sizeof(uart_buffer), "Set: %ld, Measured: %ld, ADC: %ld\r\n", motor_instance.set_speed, motor_instance.measured_speed, adc_value);
-		flag_send_data = 1;
+			snprintf(uart_buffer, sizeof(uart_buffer),
+					"Set: %ld, Measured: %ld, ADC: %ld\r\n",
+					motor_instance.set_speed, motor_instance.measured_speed,
+					adc_value);
+			flag_send_data = 1;
+		}
 	}
+}
+
+void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
+	//po wcisnieciu przycisku
+	if (GPIO_Pin == B1_Pin) {
+		uint32_t current_time = HAL_GetTick();
+		if (current_time - last_EXTI_interrupt_time > 50) { //cyfrowy Debouncing 50 ms
+			//jesli flaga wlaczenia byla rowna 0 to zmiana na 1
+			if (flag_turn_on_off == 0) {
+				motor_update_count(&motor_instance); //zeby zresetowac licznik po wznowieniu
+				flag_turn_on_off = 1;
+				//jesli flaga wlaczenia byla rowna 1 to zastopuj silnik
+			} else if (flag_turn_on_off == 1) {
+				motor_stop(&motor_instance);
+				flag_turn_on_off = 0;
+			}
+		}
+		last_EXTI_interrupt_time = current_time;
+	}
+
 }
 /* USER CODE END 4 */
 

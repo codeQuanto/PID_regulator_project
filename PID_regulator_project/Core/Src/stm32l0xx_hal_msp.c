@@ -168,7 +168,7 @@ void HAL_TIM_Base_MspInit(TIM_HandleTypeDef* htim_base)
     /* Peripheral clock enable */
     __HAL_RCC_TIM21_CLK_ENABLE();
     /* TIM21 interrupt Init */
-    HAL_NVIC_SetPriority(TIM21_IRQn, 0, 0);
+    HAL_NVIC_SetPriority(TIM21_IRQn, 1, 0);
     HAL_NVIC_EnableIRQ(TIM21_IRQn);
   /* USER CODE BEGIN TIM21_MspInit 1 */
 
