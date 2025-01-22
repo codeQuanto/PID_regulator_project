@@ -57,9 +57,3 @@ void motor_set_RPM_speed(motor_struct *motor, int RPM_speed){
 	}
 }
 
-int32_t get_motor_set_speed(motor_struct *motor){
-	return motor->set_speed;
-}
-int32_t get_motor_meausered_speed(motor_struct *motor){
-	return motor->measured_speed;
-}

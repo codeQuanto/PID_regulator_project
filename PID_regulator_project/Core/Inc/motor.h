@@ -36,7 +36,6 @@ void motor_init(motor_struct *motor, TIM_HandleTypeDef *encoder_tim, TIM_HandleT
 void motor_update_count(motor_struct *motor);
 void motor_calculate_speed(motor_struct *motor);
 void motor_set_RPM_speed(motor_struct *motor, int RPM_speed);
-int32_t get_motor_set_speed(motor_struct *motor);
-int32_t get_motor_meausered_speed(motor_struct *motor);
+
 
 #endif /* INC_MOTOR_H_ */

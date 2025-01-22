@@ -40,6 +40,8 @@
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
+ADC_HandleTypeDef hadc;
+
 TIM_HandleTypeDef htim2;
 TIM_HandleTypeDef htim3;
 TIM_HandleTypeDef htim21;
@@ -59,6 +61,7 @@ static void MX_TIM2_Init(void);
 static void MX_TIM3_Init(void);
 static void MX_TIM21_Init(void);
 static void MX_USART2_UART_Init(void);
+static void MX_ADC_Init(void);
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
@@ -68,6 +71,8 @@ static void MX_USART2_UART_Init(void);
 motor_struct motor_instance;
 char uart_buffer[100];
 volatile int flag_send_data;
+uint32_t adc_value = 0;
+int new_speed = 0;
 /* USER CODE END 0 */
 
 /**
@@ -103,6 +108,7 @@ int main(void)
   MX_TIM3_Init();
   MX_TIM21_Init();
   MX_USART2_UART_Init();
+  MX_ADC_Init();
   /* USER CODE BEGIN 2 */
 #ifdef Motor_Test
 	int speed = 0;
@@ -121,31 +127,34 @@ int main(void)
 	HAL_TIM_Encoder_Start(&htim3, TIM_CHANNEL_ALL);
 	HAL_TIM_Base_Start_IT(&htim21);
 
-	int speed_table[] = {50, 100, -100, 10};
-	int i = 0;
+	HAL_ADCEx_Calibration_Start(&hadc, ADC_SINGLE_ENDED);
+
+//	int speed_table[] = {20, 50, -20, 10};
+//	int i = 0;
 
 	uint32_t timeTick = HAL_GetTick();
-	uint32_t maxTime = 6000;
+	uint32_t maxTime = 1000;
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
 	while (1) {
 
-		if (HAL_GetTick() - timeTick >= maxTime) {
+		HAL_ADC_Start(&hadc);
+		HAL_ADC_PollForConversion(&hadc, HAL_MAX_DELAY);
+		adc_value = HAL_ADC_GetValue(&hadc);
+
+		if (HAL_GetTick() - timeTick >= maxTime) { //taka testowa funckja ktora zmienia wartosc speed maksymalnie co 1s (bo na arzie szumy z adc)
 			timeTick = HAL_GetTick();
 
-			motor_set_RPM_speed(&motor_instance, speed_table[i]);
-			i++;
-
-			if (i >= 4){
-				i = 0;
-			}
+			new_speed = (adc_value * 300) / 4095 - 150; //zmiana odczytu adc na zakres <-150,-150>
+			motor_set_RPM_speed(&motor_instance, new_speed);
 		}
 
 		if (flag_send_data) {
 			flag_send_data = 0;
-			HAL_UART_Transmit(&huart2, (uint8_t*)uart_buffer, strlen(uart_buffer), HAL_MAX_DELAY);
+			HAL_UART_Transmit(&huart2, (uint8_t*) uart_buffer,
+					strlen(uart_buffer), HAL_MAX_DELAY);
 		}
 
 
@@ -228,6 +237,62 @@ void SystemClock_Config(void)
   {
     Error_Handler();
   }
+}
+
+/**
+  * @brief ADC Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_ADC_Init(void)
+{
+
+  /* USER CODE BEGIN ADC_Init 0 */
+
+  /* USER CODE END ADC_Init 0 */
+
+  ADC_ChannelConfTypeDef sConfig = {0};
+
+  /* USER CODE BEGIN ADC_Init 1 */
+
+  /* USER CODE END ADC_Init 1 */
+
+  /** Configure the global features of the ADC (Clock, Resolution, Data Alignment and number of conversion)
+  */
+  hadc.Instance = ADC1;
+  hadc.Init.OversamplingMode = DISABLE;
+  hadc.Init.ClockPrescaler = ADC_CLOCK_SYNC_PCLK_DIV1;
+  hadc.Init.Resolution = ADC_RESOLUTION_12B;
+  hadc.Init.SamplingTime = ADC_SAMPLETIME_160CYCLES_5;
+  hadc.Init.ScanConvMode = ADC_SCAN_DIRECTION_FORWARD;
+  hadc.Init.DataAlign = ADC_DATAALIGN_RIGHT;
+  hadc.Init.ContinuousConvMode = DISABLE;
+  hadc.Init.DiscontinuousConvMode = DISABLE;
+  hadc.Init.ExternalTrigConvEdge = ADC_EXTERNALTRIGCONVEDGE_NONE;
+  hadc.Init.ExternalTrigConv = ADC_SOFTWARE_START;
+  hadc.Init.DMAContinuousRequests = DISABLE;
+  hadc.Init.EOCSelection = ADC_EOC_SINGLE_CONV;
+  hadc.Init.Overrun = ADC_OVR_DATA_PRESERVED;
+  hadc.Init.LowPowerAutoWait = DISABLE;
+  hadc.Init.LowPowerFrequencyMode = DISABLE;
+  hadc.Init.LowPowerAutoPowerOff = DISABLE;
+  if (HAL_ADC_Init(&hadc) != HAL_OK)
+  {
+    Error_Handler();
+  }
+
+  /** Configure for the selected ADC regular channel to be converted.
+  */
+  sConfig.Channel = ADC_CHANNEL_4;
+  sConfig.Rank = ADC_RANK_CHANNEL_NUMBER;
+  if (HAL_ADC_ConfigChannel(&hadc, &sConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN ADC_Init 2 */
+
+  /* USER CODE END ADC_Init 2 */
+
 }
 
 /**
@@ -467,7 +532,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim){
 	if (htim->Instance == htim21.Instance) {
 		motor_calculate_speed(&motor_instance);
 
-		snprintf(uart_buffer, sizeof(uart_buffer), "Set: %ld, Measured: %ld\r\n", motor_instance.set_speed, motor_instance.measured_speed);
+		snprintf(uart_buffer, sizeof(uart_buffer), "Set: %ld, Measured: %ld, ADC: %ld\r\n", motor_instance.set_speed, motor_instance.measured_speed, adc_value);
 		flag_send_data = 1;
 	}
 }
