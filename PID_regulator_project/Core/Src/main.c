@@ -22,6 +22,7 @@
 #include "motor.h"
 #include "string.h"
 #include "stdio.h"
+#include "./I2C_LCD_Inc/I2C_LCD.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -32,6 +33,7 @@
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
 //#define Motor_Test //prosty test silnika zmieniajacy jego predkosc w zakresie 0->100->0->-100->0
+#define LCD_Test
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -41,6 +43,8 @@
 
 /* Private variables ---------------------------------------------------------*/
 ADC_HandleTypeDef hadc;
+
+I2C_HandleTypeDef hi2c1;
 
 TIM_HandleTypeDef htim2;
 TIM_HandleTypeDef htim3;
@@ -62,6 +66,7 @@ static void MX_TIM3_Init(void);
 static void MX_TIM21_Init(void);
 static void MX_USART2_UART_Init(void);
 static void MX_ADC_Init(void);
+static void MX_I2C1_Init(void);
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
@@ -70,11 +75,15 @@ static void MX_ADC_Init(void);
 /* USER CODE BEGIN 0 */
 motor_struct motor_instance;
 char uart_buffer[100];
+char set_speed_buffer[12];
+char act_speed_buffer[12];
 volatile int flag_send_data;
 volatile int flag_turn_on_off = 0;
+volatile int flag_refresh_LCD = 0;
 volatile uint32_t last_EXTI_interrupt_time = 0;
 uint32_t adc_value = 0;
 int new_speed = 0;
+
 /* USER CODE END 0 */
 
 /**
@@ -111,6 +120,7 @@ int main(void)
   MX_TIM21_Init();
   MX_USART2_UART_Init();
   MX_ADC_Init();
+  MX_I2C1_Init();
   /* USER CODE BEGIN 2 */
 #ifdef Motor_Test
 	int speed = 0;
@@ -123,20 +133,36 @@ int main(void)
 #endif
 
 
+
+	I2C_LCD_Init(I2C_LCD_1);
+	I2C_LCD_SetCursor(I2C_LCD_1, 0, 0);
+	I2C_LCD_WriteString(I2C_LCD_1, "SYSTEM");
+	I2C_LCD_SetCursor(I2C_LCD_1, 0, 1);
+	I2C_LCD_WriteString(I2C_LCD_1, "INITIALISATION"); HAL_Delay(1000);
+
 	Cytron_Motor_Init();
 	motor_init(&motor_instance, &htim3, &htim21);
-	pid_init(&(motor_instance.pid_controller), MOTOR_Kp, MOTOR_Ki, MOTOR_Kd, MOTOR_ANTI_WINDUP);
+	pid_init(&(motor_instance.pid_controller), MOTOR_Kp, MOTOR_Ki, MOTOR_Kd,
+			MOTOR_ANTI_WINDUP);
+
 
 	HAL_TIM_Encoder_Start(&htim3, TIM_CHANNEL_ALL);
 	HAL_TIM_Base_Start_IT(&htim21);
 
 	HAL_ADCEx_Calibration_Start(&hadc, ADC_SINGLE_ENDED);
 
+	I2C_LCD_Clear(I2C_LCD_1);
+	I2C_LCD_SetCursor(I2C_LCD_1, 0, 0);
+	I2C_LCD_WriteString(I2C_LCD_1, "SET RPM: 0");
+	I2C_LCD_SetCursor(I2C_LCD_1, 0, 1);
+	I2C_LCD_WriteString(I2C_LCD_1, "ACT RPM: 0");
+
+
 //	int speed_table[] = {20, 50, -20, 10};
 //	int i = 0;
 
 	uint32_t timeTick = HAL_GetTick();
-	uint32_t maxTime = 1000;
+	uint32_t maxTime = 10;
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -160,6 +186,17 @@ int main(void)
 				HAL_UART_Transmit(&huart2, (uint8_t*) uart_buffer,
 						strlen(uart_buffer), HAL_MAX_DELAY);
 			}
+#ifdef LCD_Test
+			if (flag_refresh_LCD) {
+				flag_refresh_LCD = 0;
+				/*I2C_LCD_SetCursor(I2C_LCD_1, 9, 0); zamiast tych linii kodu wywołanie funkcji, która wszystko zrobi za nas
+				I2C_LCD_WriteString(I2C_LCD_1, set_speed_buffer);
+				I2C_LCD_SetCursor(I2C_LCD_1, 9, 1);
+				I2C_LCD_WriteString(I2C_LCD_1, act_speed_buffer);*/
+				I2C_LCD_DisplayMotorFormat(I2C_LCD_1, motor_instance.set_speed, 9, 0);
+				I2C_LCD_DisplayMotorFormat(I2C_LCD_1, motor_instance.measured_speed, 9, 1);
+			}
+#endif
 		}
 
 #ifdef Motor_Test
@@ -235,8 +272,9 @@ void SystemClock_Config(void)
   {
     Error_Handler();
   }
-  PeriphClkInit.PeriphClockSelection = RCC_PERIPHCLK_USART2;
+  PeriphClkInit.PeriphClockSelection = RCC_PERIPHCLK_USART2|RCC_PERIPHCLK_I2C1;
   PeriphClkInit.Usart2ClockSelection = RCC_USART2CLKSOURCE_PCLK1;
+  PeriphClkInit.I2c1ClockSelection = RCC_I2C1CLKSOURCE_PCLK1;
   if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInit) != HAL_OK)
   {
     Error_Handler();
@@ -296,6 +334,54 @@ static void MX_ADC_Init(void)
   /* USER CODE BEGIN ADC_Init 2 */
 
   /* USER CODE END ADC_Init 2 */
+
+}
+
+/**
+  * @brief I2C1 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_I2C1_Init(void)
+{
+
+  /* USER CODE BEGIN I2C1_Init 0 */
+
+  /* USER CODE END I2C1_Init 0 */
+
+  /* USER CODE BEGIN I2C1_Init 1 */
+
+  /* USER CODE END I2C1_Init 1 */
+  hi2c1.Instance = I2C1;
+  hi2c1.Init.Timing = 0x00503D58;
+  hi2c1.Init.OwnAddress1 = 0;
+  hi2c1.Init.AddressingMode = I2C_ADDRESSINGMODE_7BIT;
+  hi2c1.Init.DualAddressMode = I2C_DUALADDRESS_DISABLE;
+  hi2c1.Init.OwnAddress2 = 0;
+  hi2c1.Init.OwnAddress2Masks = I2C_OA2_NOMASK;
+  hi2c1.Init.GeneralCallMode = I2C_GENERALCALL_DISABLE;
+  hi2c1.Init.NoStretchMode = I2C_NOSTRETCH_DISABLE;
+  if (HAL_I2C_Init(&hi2c1) != HAL_OK)
+  {
+    Error_Handler();
+  }
+
+  /** Configure Analogue filter
+  */
+  if (HAL_I2CEx_ConfigAnalogFilter(&hi2c1, I2C_ANALOGFILTER_ENABLE) != HAL_OK)
+  {
+    Error_Handler();
+  }
+
+  /** Configure Digital filter
+  */
+  if (HAL_I2CEx_ConfigDigitalFilter(&hi2c1, 0) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN I2C1_Init 2 */
+
+  /* USER CODE END I2C1_Init 2 */
 
 }
 
@@ -537,6 +623,7 @@ static void MX_GPIO_Init(void)
 
 /* USER CODE BEGIN 4 */
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
+
 	if (htim->Instance == htim21.Instance) {
 		if (flag_turn_on_off == 1) {
 			motor_calculate_speed(&motor_instance);
@@ -546,8 +633,18 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
 					motor_instance.set_speed, motor_instance.measured_speed,
 					adc_value);
 			flag_send_data = 1;
+#ifdef LCD_Test
+			snprintf(set_speed_buffer, sizeof(set_speed_buffer),
+								"%ld",motor_instance.set_speed);
+			snprintf(act_speed_buffer, sizeof(act_speed_buffer),
+											"%ld",motor_instance.measured_speed);
+
+			flag_refresh_LCD = 1;
+#endif
 		}
 	}
+
+
 }
 
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
@@ -559,8 +656,10 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
 			if (flag_turn_on_off == 0) {
 				motor_update_count(&motor_instance); //zeby zresetowac licznik po wznowieniu
 				flag_turn_on_off = 1;
+				I2C_LCD_Backlight(I2C_LCD_1);
 				//jesli flaga wlaczenia byla rowna 1 to zastopuj silnik
 			} else if (flag_turn_on_off == 1) {
+				I2C_LCD_NoBacklight(I2C_LCD_1);
 				motor_stop(&motor_instance);
 				flag_turn_on_off = 0;
 			}
