@@ -26,7 +26,7 @@ typedef struct{
 #define MOTOR_ANTI_WINDUP 1000
 #define MOTOR_TOTAL_ERROR_LIMIT 150
 
-void pid_init(pid_struct *pid_data, float kp_init, float ki_init, float kd_init, int anti_windup_limit_init);
+void pid_init(pid_struct *pid_data);
 void pid_reset(pid_struct *pid_data);
 int pid_calculate(pid_struct *pid_data, int setpoint, int process_variable);
 

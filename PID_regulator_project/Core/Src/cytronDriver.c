@@ -21,33 +21,31 @@
 
 #include "cytronDriver.h"
 
-uint32_t workingChannel;
-
 //dzialanie tej funkcji wynika z dzialania sterownika: in1 high, in2 low -> cw, in1 low, in2 high -> ccw
-void Cytron_Set_Motor_Direction(Cytron_Direction direction){
+void Cytron_Set_Motor_Direction(driver_struct *driver,
+		Cytron_Direction direction) {
 	if (direction == cw) {
-		workingChannel = TIM_CHANNEL_1;
-		__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_2, 0); //ustawienie wypelnienia pwm in 2 na 0%
-	}else if (direction == ccw) {
-		workingChannel = TIM_CHANNEL_2;
-		__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, 0);
+		driver->working_channel = TIM_CHANNEL_1;
+		__HAL_TIM_SET_COMPARE(driver->timer, TIM_CHANNEL_2, 0); //ustawienie wypelnienia pwm in 2 na 0%
+	} else if (direction == ccw) {
+		driver->working_channel = TIM_CHANNEL_2;
+		__HAL_TIM_SET_COMPARE(driver->timer, TIM_CHANNEL_1, 0); //ustawienie wypelnienia pwm in 1 na 0%
 	}
 }
 
-void Cytron_Set_Motor_Speed(uint16_t speed){
+void Cytron_Set_Motor_Speed(driver_struct *driver, uint16_t speed) {
 	//jesli wypelnienie jest wieksze niz maksymalne to przypisuje maksymalna wartosc
-	if (speed >= htim2.Instance->ARR) {
-		speed = htim2.Instance->ARR;
+	if (speed >= driver->timer->Instance->ARR) {
+		speed = driver->timer->Instance->ARR;
 	}
 
-	__HAL_TIM_SET_COMPARE(&htim2, workingChannel, speed);
+	__HAL_TIM_SET_COMPARE(driver->timer, driver->working_channel, speed);
 }
 
-//ustawienie domyslnych wartosci startowych i uruchomienie timera
-void Cytron_Motor_Init(){
-	Cytron_Set_Motor_Direction(cw);
-	Cytron_Set_Motor_Speed(0);
-
-	HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_1);
-	HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_2);
+//ustawienie domyslnych wartosci startowych
+void Cytron_Motor_Init(driver_struct *driver, TIM_HandleTypeDef *PWM_timer) {
+	driver->timer = PWM_timer;
+	driver->working_channel = TIM_CHANNEL_1;
+	Cytron_Set_Motor_Direction(driver, cw);
+	Cytron_Set_Motor_Speed(driver, 0);
 }

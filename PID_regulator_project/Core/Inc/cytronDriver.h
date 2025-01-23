@@ -18,22 +18,25 @@
  *      Author: Igor
  */
 
-
 #ifndef INC_CYTRONDRIVER_H_
 #define INC_CYTRONDRIVER_H_
 
 #include "stm32l0xx.h"
 
-extern TIM_HandleTypeDef htim2;
-extern uint32_t workingChannel; //zmienna pomocnicza do wybrania odpowiedniego kanalu w zaleznosci od kierunku obrotow
-
 typedef enum {
 	cw = 0, ccw = 1
 } Cytron_Direction;
 
+typedef struct {
+	TIM_HandleTypeDef *timer;	//timer generujacy PWM
+	Cytron_Direction direction;	//kierunek obrotow
 
-void Cytron_Set_Motor_Direction(Cytron_Direction direction);
-void Cytron_Set_Motor_Speed(uint16_t speed);
-void Cytron_Motor_Init();
+	uint32_t working_channel; //aktualnie pracujacy kanal timera
+} driver_struct;
+
+void Cytron_Set_Motor_Direction(driver_struct *driver,
+		Cytron_Direction direction);
+void Cytron_Set_Motor_Speed(driver_struct *driver, uint16_t speed);
+void Cytron_Motor_Init(driver_struct *driver, TIM_HandleTypeDef *PWM_timer);
 
 #endif /* INC_CYTRONDRIVER_H_ */

@@ -12,7 +12,7 @@
 #include "pid_controller.h"
 #include "cytronDriver.h"
 
-typedef struct{
+typedef struct {
 	TIM_HandleTypeDef *timer;	//timer obslugujacy enkoder silnika
 
 	uint16_t resolution;		//ilosc zliczen timera na obrot walu
@@ -23,16 +23,17 @@ typedef struct{
 
 	int32_t actual_PWM;			//wartosc PWM
 
+	driver_struct driver;
 	pid_struct pid_controller;
-}motor_struct;
+} motor_struct;
 
 #define ENCODER_RESOLUTION				8 //wynika z hardware'u
 #define TIMER_CONFIGURATION_BOTH_EDGES	4 //ilosc zliczen na jeden impuls
 #define MOTOR_GEAR						120
-#define TIMER_INTERRUPT_FREQUENCY					10 //Hz
+#define TIMER_INTERRUPT_FREQUENCY		10 //Hz
 #define SECONDS_IN_MINUTE				60
 
-void motor_init(motor_struct *motor, TIM_HandleTypeDef *encoder_tim, TIM_HandleTypeDef *interrupt_tim);
+void motor_init(motor_struct *motor, TIM_HandleTypeDef *encoder_tim);
 void motor_update_count(motor_struct *motor);
 void motor_calculate_speed(motor_struct *motor);
 void motor_set_RPM_speed(motor_struct *motor, int RPM_speed);

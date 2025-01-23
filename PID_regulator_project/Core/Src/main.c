@@ -75,12 +75,12 @@ static void MX_I2C1_Init(void);
 /* USER CODE BEGIN 0 */
 motor_struct motor_instance;
 char uart_buffer[100];
-char set_speed_buffer[12];
-char act_speed_buffer[12];
-volatile int flag_send_data;
+volatile uint32_t last_EXTI_interrupt_time = 0;
+//char set_speed_buffer[12];
+//char act_speed_buffer[12];
+volatile int flag_send_data = 0;
 volatile int flag_turn_on_off = 0;
 volatile int flag_refresh_LCD = 0;
-volatile uint32_t last_EXTI_interrupt_time = 0;
 uint32_t adc_value = 0;
 int new_speed = 0;
 
@@ -140,14 +140,14 @@ int main(void)
 	I2C_LCD_SetCursor(I2C_LCD_1, 0, 1);
 	I2C_LCD_WriteString(I2C_LCD_1, "INITIALISATION"); HAL_Delay(1000);
 
-	Cytron_Motor_Init();
-	motor_init(&motor_instance, &htim3, &htim21);
-	pid_init(&(motor_instance.pid_controller), MOTOR_Kp, MOTOR_Ki, MOTOR_Kd,
-			MOTOR_ANTI_WINDUP);
+	Cytron_Motor_Init(&(motor_instance.driver), &htim2);
+	motor_init(&motor_instance, &htim3);
+	pid_init(&(motor_instance.pid_controller));
 
-
-	HAL_TIM_Encoder_Start(&htim3, TIM_CHANNEL_ALL);
-	HAL_TIM_Base_Start_IT(&htim21);
+	HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_1); //timer do generacji PWM
+	HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_2);
+	HAL_TIM_Encoder_Start(&htim3, TIM_CHANNEL_ALL); //timer do obslugi enkodera
+	HAL_TIM_Base_Start_IT(&htim21); //timer do generowania przerwania
 
 	HAL_ADCEx_Calibration_Start(&hadc, ADC_SINGLE_ENDED);
 
@@ -634,10 +634,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
 					adc_value);
 			flag_send_data = 1;
 #ifdef LCD_Test
-			snprintf(set_speed_buffer, sizeof(set_speed_buffer),
-								"%ld",motor_instance.set_speed);
-			snprintf(act_speed_buffer, sizeof(act_speed_buffer),
-											"%ld",motor_instance.measured_speed);
+
 
 			flag_refresh_LCD = 1;
 #endif

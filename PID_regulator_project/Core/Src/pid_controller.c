@@ -7,15 +7,16 @@
 
 #include <pid_controller.h>
 
-void pid_init(pid_struct *pid_data, float kp_init, float ki_init, float kd_init, int anti_windup_limit_init){
+void pid_init(pid_struct *pid_data){
 	pid_data->previous_error = 0;
 	pid_data->total_error = 0;
 
-	pid_data->Kp = kp_init;
-	pid_data->Ki = ki_init;
-	pid_data->Kd = kd_init;
+	pid_data->Kp = MOTOR_Kp;
+	pid_data->Ki = MOTOR_Ki;
+	pid_data->Kd = MOTOR_Kd;
 
-	pid_data->anti_windup_limit = anti_windup_limit_init;
+	pid_data->anti_windup_limit = MOTOR_ANTI_WINDUP;
+	pid_data->total_error_limit = MOTOR_TOTAL_ERROR_LIMIT;
 }
 
 void pid_reset(pid_struct *pid_data){
