@@ -1,3 +1,0 @@
-../Core/Src/cytronDriver.c:19:6:Cytron_Set_Motor_Direction	3
-../Core/Src/cytronDriver.c:36:6:Cytron_Set_Motor_Speed	5
-../Core/Src/cytronDriver.c:50:6:Cytron_Motor_Init	1

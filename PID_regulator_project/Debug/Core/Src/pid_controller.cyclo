@@ -1,3 +1,0 @@
-../Core/Src/pid_controller.c:24:6:pid_init	1
-../Core/Src/pid_controller.c:46:6:pid_reset	1
-../Core/Src/pid_controller.c:66:5:pid_calculate	5
