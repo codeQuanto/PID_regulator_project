@@ -5,9 +5,19 @@
  *
  * Plik główny projektu regulacego prędkości obrotowej silnika DC, dostosowaną do zmieniającego
  * się obciążenia. Algorytm PID zapewnia precyzyjną kontrolę prędkości
- * i stabilność pracy silnika w różnych warunkach. Funkcje sterujące
- * będą zaimplementowane w oddzielnych bibliotekach, a w pliku main
- * będzie jedynie ich wykorzystanie.
+ * i stabilność pracy silnika w różnych warunkach.
+ *
+ * Program obsługuje sterowanie silnikiem oraz przetwarzanie danych z ADC przy użyciu DMA. Timer generuje przerwanie co 100 ms, w którym
+ * realizowane są operacje sterujące silnikiem oraz ustawiane flagi do dalszej komunikacji (UART oraz LCD). Pętla główna odpowiedzialna
+ * jest za kontrolowanie tych flag i warunkowe obsłużenie UART oraz LCD. Nadrzędna flaga pochodząca od przycisku warunkuje wykonywanie
+ * całego programu (nie blokuje kontrolera)
+ *
+ * Kluczowe funkcje:
+ * 1. **Timer Interrupt (100 ms)** -  uaktualnienie odczytu z DMA, sterowanie silnikiem oraz wystawianie flagi do komunikacji.
+ * 2. **ADC w trybie DMA** - pobieranie danych z czujników w sposób bezpośredni, bez angażowania procesora, co pozwala na asynchroniczne
+ *    zbieranie próbek.
+ * 3. **Pętla główna** - analizowanie flagi z przerwania, obsługa komunikacji.
+ * 4. **EXTI Interrupt** - przerwanie działania programu, wyłączenie silnika
  *
  *  Created on: Dec 1, 2024
  *      Author: Igor
@@ -72,19 +82,32 @@ static void MX_I2C1_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-motor_struct motor_instance;
-char uart_buffer[100];
-volatile uint32_t last_EXTI_interrupt_time = 0; //zmienna potrzebna do cyfrowego debouncingu przycisku
-volatile int flag_send_data = 0;
-volatile int flag_turn_on_off = 0;
-volatile int flag_refresh_LCD = 0;
-int lcd_refresh_counter = 0; //spowolnienie odswiezania ekranu
+motor_struct motor_instance; /**< Instancja silnika DC */
+
+volatile int flag_turn_on_off = 0; /**< Flaga do włączania/wyłączania silnika */
+volatile int flag_send_data = 0; /**< Flaga wskazująca na konieczność wysłania danych przez UART */
+volatile int flag_refresh_LCD = 0; /**< Flaga do odświeżania wyświetlacza LCD */
+
+char uart_buffer[100]; /**< Bufor do komunikacji UART */
+int lcd_refresh_counter = 0; /**< Licznik odświeżania wyświetlacza LCD */
+
+volatile static uint16_t adc_value[1];/**< Tablica przechowująca wartość odczytaną z ADC. */
+
+int new_speed = 0;/**< Obliczona prędkość silnika na podstawie odczytu z ADC. */
+
+volatile uint32_t last_EXTI_interrupt_time; /**< Zmienna do cyfrowego debouncingu przycisku */
 
 /* USER CODE END 0 */
 
 /**
- * @brief  The application entry point.
- * @retval int
+ * @brief  Główna funkcja programu, zawiera inicjalizację peryferiów oraz logikę sterowania silnikiem.
+ *
+ * Funkcja inicjalizuje wszystkie peryferia, w tym ADC, PWM, enkoder, UART i LCD. Następnie
+ * w pętli głównej programu monitoruje sygnały wejściowe (np. przyciski, ADC), steruje
+ * prędkością silnika na podstawie algorytmu PID oraz wyświetla aktualny stan na wyświetlaczu LCD.
+ * Program obsługuje także przesyłanie danych przez UART.
+ *
+ * @retval int Zwraca 0 w przypadku poprawnego zakończenia.
  */
 int main(void) {
 
@@ -119,9 +142,7 @@ int main(void) {
 	MX_I2C1_Init();
 	/* USER CODE BEGIN 2 */
 
-	volatile static uint16_t adc_value[1];
-	int new_speed = 0;
-
+	/* Inicjalizacja LCD */
 	I2C_LCD_Init(I2C_LCD_1);
 	I2C_LCD_SetCursor(I2C_LCD_1, 0, 0);
 	I2C_LCD_WriteString(I2C_LCD_1, "SYSTEM");
@@ -129,18 +150,22 @@ int main(void) {
 	I2C_LCD_WriteString(I2C_LCD_1, "INITIALISATION");
 	HAL_Delay(1000);
 
+	/* Inicjalizacja silnika i PID */
 	Cytron_Motor_Init(&(motor_instance.driver), &htim2);
 	motor_init(&motor_instance, &htim3);
 	pid_init(&(motor_instance.pid_controller));
 
-	HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_1); //timer do generacji PWM
+	/* Uruchomienie PWM, enkodera oraz licznika generującego przerwanie */
+	HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_1); /**timer do generacji PWM*/
 	HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_2);
-	HAL_TIM_Encoder_Start(&htim3, TIM_CHANNEL_ALL); //timer do obslugi enkodera
-	HAL_TIM_Base_Start_IT(&htim21); //timer do generowania przerwania
+	HAL_TIM_Encoder_Start(&htim3, TIM_CHANNEL_ALL); /**timer do obslugi enkodera*/
+	HAL_TIM_Base_Start_IT(&htim21); /**timer do generowania przerwania*/
 
+	/* Uruchomienie i kalibracja ADC */
 	HAL_ADCEx_Calibration_Start(&hadc, ADC_SINGLE_ENDED);
 	HAL_ADC_Start_DMA(&hadc, (uint32_t*) adc_value, 1);
 
+	/* Ustawienia początkowe na LCD */
 	I2C_LCD_Clear(I2C_LCD_1);
 	I2C_LCD_SetCursor(I2C_LCD_1, 0, 0);
 	I2C_LCD_WriteString(I2C_LCD_1, "SET RPM: 0");
@@ -153,28 +178,24 @@ int main(void) {
 	/* USER CODE BEGIN WHILE */
 	while (1) {
 
+		/* Jeżeli silnik jest włączony, przetwórz dane wejściowe i wyświetl informacje */
 		if (flag_turn_on_off != 0) {
 
-			new_speed = (adc_value[0] * 300) / 4095 - 150; //zmiana odczytu adc na zakres <-150,-150>
-			motor_set_RPM_speed(&motor_instance, new_speed);
-
+			/* Jeśli flaga wysyłania danych jest ustawiona, wyślij dane przez UART */
 			if (flag_send_data) {
 				flag_send_data = 0;
 				HAL_UART_Transmit(&huart2, (uint8_t*) uart_buffer,
 						strlen(uart_buffer), HAL_MAX_DELAY);
 			}
 
+			/* Jeśli flaga odświeżania LCD jest ustawiona, zaktualizuj wyświetlacz */
 			if (flag_refresh_LCD) {
 				flag_refresh_LCD = 0;
-
 				I2C_LCD_DisplayMotorFormat(I2C_LCD_1, motor_instance.set_speed,
 						9, 0);
-
 				I2C_LCD_DisplayMotorFormat(I2C_LCD_1,
 						motor_instance.measured_speed, 9, 1);
-
 			}
-
 		}
 
 		/* USER CODE END WHILE */
@@ -564,10 +585,25 @@ static void MX_GPIO_Init(void) {
 }
 
 /* USER CODE BEGIN 4 */
+/**
+ * @brief Callback do obsługi przerwania timera.
+ *
+ * Ta funkcja jest wywoływana, gdy upłynie okres timer'a htim21. Aktualizuje odczyt ADC, oblicza prędkość
+ * silnika, przygotowuje dane do wysłania przez UART oraz zarządza flagami wysłania danych i odświeżania wyświetlacza LCD.
+ * Przygotowanie danych do wysyłki w tym miejscu gwarantuje, że dane wysłane przez UART i wyświetlone na ekranie
+ * pochodzą z tego samego punktu czasowego.
+ *
+ * @param htim Pointer do struktury TIM_HandleTypeDef zawierającej informacje o timerze.
+ */
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
 
 	if (htim->Instance == htim21.Instance) {
 		if (flag_turn_on_off == 1) {
+
+			/* Oblicz nową prędkość na podstawie odczytu z ADC */
+			new_speed = (adc_value[0] * 300) / 4095 - 150;
+			motor_set_RPM_speed(&motor_instance, new_speed);
+
 			motor_calculate_speed(&motor_instance);
 
 			snprintf(uart_buffer, sizeof(uart_buffer),
@@ -576,7 +612,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
 			flag_send_data = 1;
 
 			lcd_refresh_counter++;
-			if (lcd_refresh_counter >= 5) { //flaga odswiezania ekranu zglaszana co 5 przerwanie
+			if (lcd_refresh_counter >= 5) { /**flaga odswiezania ekranu zglaszana co 5 przerwanie*/
 				flag_refresh_LCD = 1;
 				lcd_refresh_counter = 0;
 			}
@@ -586,17 +622,26 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
 
 }
 
+/**
+ * @brief Callback do obsługi przerwania zewnętrznego (przycisk).
+ *
+ * Funkcja ta jest wywoływana po naciśnięciu przycisku (GPIO_Pin == B1_Pin).
+ * Wykonuje debouncing oraz w zależności od stanu flagi włącza lub wyłącza silnik,
+ * a także zarządza podświetleniem wyświetlacza LCD.
+ *
+ * @param GPIO_Pin Numer pinu, który wywołał przerwanie.
+ */
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
-	//po wcisnieciu przycisku
+	/**po wcisnieciu przycisku*/
 	if (GPIO_Pin == B1_Pin) {
 		uint32_t current_time = HAL_GetTick();
-		if (current_time - last_EXTI_interrupt_time > 50) { //cyfrowy Debouncing 50 ms
-			//jesli flaga wlaczenia byla rowna 0 to zmiana na 1
+		if (current_time - last_EXTI_interrupt_time > 50) { /**cyfrowy Debouncing 50 ms*/
+			/**jesli flaga wlaczenia byla rowna 0 to zmiana na 1*/
 			if (flag_turn_on_off == 0) {
-				motor_update_count(&motor_instance); //zeby zresetowac licznik po wznowieniu
+				motor_update_count(&motor_instance); /**zeby zresetowac licznik po wznowieniu*/
 				flag_turn_on_off = 1;
 				I2C_LCD_Backlight(I2C_LCD_1);
-				//jesli flaga wlaczenia byla rowna 1 to zastopuj silnik
+				/**jesli flaga wlaczenia byla rowna 1 to zastopuj silnik*/
 			} else if (flag_turn_on_off == 1) {
 				I2C_LCD_NoBacklight(I2C_LCD_1);
 				motor_stop(&motor_instance);

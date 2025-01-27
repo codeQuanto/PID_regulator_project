@@ -1,0 +1,5 @@
+../Core/Src/motor.c:23:6:motor_init	1
+../Core/Src/motor.c:42:6:motor_update_count	1
+../Core/Src/motor.c:57:6:motor_calculate_speed	4
+../Core/Src/motor.c:91:6:motor_set_RPM_speed	2
+../Core/Src/motor.c:106:6:motor_stop	1
