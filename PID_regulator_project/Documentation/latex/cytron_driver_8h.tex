@@ -1,0 +1,165 @@
+\doxysection{C\+:/\+Users/\+Igor/\+STM32\+Cube\+IDE/workspace\+\_\+1.16.1/\+PID\+\_\+regulator\+\_\+project/\+Core/\+Inc/cytron\+Driver.h File Reference}
+\hypertarget{cytron_driver_8h}{}\label{cytron_driver_8h}\index{C:/Users/Igor/STM32CubeIDE/workspace\_1.16.1/PID\_regulator\_project/Core/Inc/cytronDriver.h@{C:/Users/Igor/STM32CubeIDE/workspace\_1.16.1/PID\_regulator\_project/Core/Inc/cytronDriver.h}}
+
+
+Sterownik silnika DC do obsługi prędkości i kierunku obrotów za pomocą PWM.  
+
+
+{\ttfamily \#include "{}stm32l0xx.\+h"{}}\newline
+\doxysubsubsection*{Data Structures}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structdriver__struct}{driver\+\_\+struct}}
+\begin{DoxyCompactList}\small\item\em Struktura reprezentująca sterownik silnika DC. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+enum \mbox{\hyperlink{cytron_driver_8h_a88d6aa2dcf0e707fd0ca6cd1ad924bca}{Cytron\+\_\+\+Direction}} \{ {\bfseries cw} = 0
+, {\bfseries ccw} = 1
+ \}
+\begin{DoxyCompactList}\small\item\em Enum określający kierunek obrotów silnika. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{cytron_driver_8h_a28af91e8612b1036f82c474824c9ae42}{Cytron\+\_\+\+Set\+\_\+\+Motor\+\_\+\+Direction}} (\mbox{\hyperlink{structdriver__struct}{driver\+\_\+struct}} \texorpdfstring{$\ast$}{*}driver, \mbox{\hyperlink{cytron_driver_8h_a88d6aa2dcf0e707fd0ca6cd1ad924bca}{Cytron\+\_\+\+Direction}} direction)
+\begin{DoxyCompactList}\small\item\em Ustawia kierunek obrotów silnika. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{cytron_driver_8h_a0a4dd2f511b824dc0aafc2e6cb4876ff}{Cytron\+\_\+\+Set\+\_\+\+Motor\+\_\+\+Speed}} (\mbox{\hyperlink{structdriver__struct}{driver\+\_\+struct}} \texorpdfstring{$\ast$}{*}driver, uint16\+\_\+t speed)
+\begin{DoxyCompactList}\small\item\em Ustawia prędkość obrotów silnika. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{cytron_driver_8h_a2e535a3bea6910647233b446e7426164}{Cytron\+\_\+\+Motor\+\_\+\+Init}} (\mbox{\hyperlink{structdriver__struct}{driver\+\_\+struct}} \texorpdfstring{$\ast$}{*}driver, TIM\+\_\+\+Handle\+Type\+Def \texorpdfstring{$\ast$}{*}PWM\+\_\+timer)
+\begin{DoxyCompactList}\small\item\em Inicjalizuje sterownik silnika z początkową prędkością 0 i domyślnym kierunkiem. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Sterownik silnika DC do obsługi prędkości i kierunku obrotów za pomocą PWM. 
+
+Struktury\+:
+\begin{DoxyItemize}
+\item \doxylink{structdriver__struct}{driver\+\_\+struct}\+: Zawiera wskaźnik do timera PWM, kierunek obrotów i aktualny kanał timera.
+
+Created on\+: Dec 1, 2024 Author\+: Igor 
+\end{DoxyItemize}
+
+\doxysubsection{Enumeration Type Documentation}
+\Hypertarget{cytron_driver_8h_a88d6aa2dcf0e707fd0ca6cd1ad924bca}\index{cytronDriver.h@{cytronDriver.h}!Cytron\_Direction@{Cytron\_Direction}}
+\index{Cytron\_Direction@{Cytron\_Direction}!cytronDriver.h@{cytronDriver.h}}
+\doxysubsubsection{\texorpdfstring{Cytron\_Direction}{Cytron\_Direction}}
+{\footnotesize\ttfamily \label{cytron_driver_8h_a88d6aa2dcf0e707fd0ca6cd1ad924bca} 
+enum \mbox{\hyperlink{cytron_driver_8h_a88d6aa2dcf0e707fd0ca6cd1ad924bca}{Cytron\+\_\+\+Direction}}}
+
+
+
+Enum określający kierunek obrotów silnika. 
+
+
+\begin{DoxyItemize}
+\item cw\+: zgodnie z ruchem wskazówek zegara.
+\item ccw\+: przeciwnie do ruchu wskazówek zegara. 
+\end{DoxyItemize}
+
+\doxysubsection{Function Documentation}
+\Hypertarget{cytron_driver_8h_a2e535a3bea6910647233b446e7426164}\index{cytronDriver.h@{cytronDriver.h}!Cytron\_Motor\_Init@{Cytron\_Motor\_Init}}
+\index{Cytron\_Motor\_Init@{Cytron\_Motor\_Init}!cytronDriver.h@{cytronDriver.h}}
+\doxysubsubsection{\texorpdfstring{Cytron\_Motor\_Init()}{Cytron\_Motor\_Init()}}
+{\footnotesize\ttfamily \label{cytron_driver_8h_a2e535a3bea6910647233b446e7426164} 
+void Cytron\+\_\+\+Motor\+\_\+\+Init (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structdriver__struct}{driver\+\_\+struct}} \texorpdfstring{$\ast$}{*}}]{driver}{, }\item[{TIM\+\_\+\+Handle\+Type\+Def \texorpdfstring{$\ast$}{*}}]{PWM\+\_\+timer}{}\end{DoxyParamCaption})}
+
+
+
+Inicjalizuje sterownik silnika z początkową prędkością 0 i domyślnym kierunkiem. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em driver} & Wskaźnik do struktury sterownika silnika. \\
+\hline
+{\em PWM\+\_\+timer} & Wskaźnik do timera generującego PWM.\\
+\hline
+\end{DoxyParams}
+Inicjalizuje sterownik silnika z początkową prędkością 0 i domyślnym kierunkiem.
+
+
+\begin{DoxyParams}{Parameters}
+{\em driver} & Wskaźnik do struktury sterownika silnika. \\
+\hline
+{\em PWM\+\_\+timer} & Wskaźnik do timera generującego PWM. \\
+\hline
+\end{DoxyParams}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{cytron_driver_8h_a2e535a3bea6910647233b446e7426164_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=247pt]{cytron_driver_8h_a2e535a3bea6910647233b446e7426164_icgraph}
+\end{center}
+\end{figure}
+\Hypertarget{cytron_driver_8h_a28af91e8612b1036f82c474824c9ae42}\index{cytronDriver.h@{cytronDriver.h}!Cytron\_Set\_Motor\_Direction@{Cytron\_Set\_Motor\_Direction}}
+\index{Cytron\_Set\_Motor\_Direction@{Cytron\_Set\_Motor\_Direction}!cytronDriver.h@{cytronDriver.h}}
+\doxysubsubsection{\texorpdfstring{Cytron\_Set\_Motor\_Direction()}{Cytron\_Set\_Motor\_Direction()}}
+{\footnotesize\ttfamily \label{cytron_driver_8h_a28af91e8612b1036f82c474824c9ae42} 
+void Cytron\+\_\+\+Set\+\_\+\+Motor\+\_\+\+Direction (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structdriver__struct}{driver\+\_\+struct}} \texorpdfstring{$\ast$}{*}}]{driver}{, }\item[{\mbox{\hyperlink{cytron_driver_8h_a88d6aa2dcf0e707fd0ca6cd1ad924bca}{Cytron\+\_\+\+Direction}}}]{direction}{}\end{DoxyParamCaption})}
+
+
+
+Ustawia kierunek obrotów silnika. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em driver} & Wskaźnik do struktury sterownika silnika. \\
+\hline
+{\em direction} & Kierunek obrotów (cw lub ccw).\\
+\hline
+\end{DoxyParams}
+Ustawia kierunek obrotów silnika.
+
+
+\begin{DoxyParams}{Parameters}
+{\em driver} & Wskaźnik do struktury sterownika silnika. \\
+\hline
+{\em direction} & Kierunek obrotów (cw -\/ zgodnie z ruchem wskazówek zegara, ccw -\/ przeciwnie). \\
+\hline
+\end{DoxyParams}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{cytron_driver_8h_a28af91e8612b1036f82c474824c9ae42_icgraph}
+\end{center}
+\end{figure}
+\Hypertarget{cytron_driver_8h_a0a4dd2f511b824dc0aafc2e6cb4876ff}\index{cytronDriver.h@{cytronDriver.h}!Cytron\_Set\_Motor\_Speed@{Cytron\_Set\_Motor\_Speed}}
+\index{Cytron\_Set\_Motor\_Speed@{Cytron\_Set\_Motor\_Speed}!cytronDriver.h@{cytronDriver.h}}
+\doxysubsubsection{\texorpdfstring{Cytron\_Set\_Motor\_Speed()}{Cytron\_Set\_Motor\_Speed()}}
+{\footnotesize\ttfamily \label{cytron_driver_8h_a0a4dd2f511b824dc0aafc2e6cb4876ff} 
+void Cytron\+\_\+\+Set\+\_\+\+Motor\+\_\+\+Speed (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structdriver__struct}{driver\+\_\+struct}} \texorpdfstring{$\ast$}{*}}]{driver}{, }\item[{uint16\+\_\+t}]{speed}{}\end{DoxyParamCaption})}
+
+
+
+Ustawia prędkość obrotów silnika. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em driver} & Wskaźnik do struktury sterownika silnika. \\
+\hline
+{\em speed} & Wartość PWM określająca prędkość (0 do wartości ARR).\\
+\hline
+\end{DoxyParams}
+Ustawia prędkość obrotów silnika.
+
+
+\begin{DoxyParams}{Parameters}
+{\em driver} & Wskaźnik do struktury sterownika silnika. \\
+\hline
+{\em speed} & Wartość PWM określająca prędkość (0 do wartości ARR). \\
+\hline
+\end{DoxyParams}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{cytron_driver_8h_a0a4dd2f511b824dc0aafc2e6cb4876ff_icgraph}
+\end{center}
+\end{figure}

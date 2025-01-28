@@ -1,10 +1,10 @@
-/*
- * pid_controller.h
+/**
+ * @file pid_controller.h
  *
  *  Created on: Jan 15, 2025
  *      Author: Igor
  *
- * Nagłówek zawierający definicję struktury i funkcji regulatora PID.
+ * @brief Nagłówek zawierający definicję struktury i funkcji regulatora PID.
  * Regulator PID jest używany do sterowania prędkością silnika, uwzględniając błąd
  * między zadanym a rzeczywistym stanem (np. prędkością), oraz oblicza odpowiednią wartość
  * sterującą, która pozwala na utrzymanie zadanej prędkości.

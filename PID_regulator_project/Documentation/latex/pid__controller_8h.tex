@@ -1,0 +1,169 @@
+\doxysection{C\+:/\+Users/\+Igor/\+STM32\+Cube\+IDE/workspace\+\_\+1.16.1/\+PID\+\_\+regulator\+\_\+project/\+Core/\+Inc/pid\+\_\+controller.h File Reference}
+\hypertarget{pid__controller_8h}{}\label{pid__controller_8h}\index{C:/Users/Igor/STM32CubeIDE/workspace\_1.16.1/PID\_regulator\_project/Core/Inc/pid\_controller.h@{C:/Users/Igor/STM32CubeIDE/workspace\_1.16.1/PID\_regulator\_project/Core/Inc/pid\_controller.h}}
+
+
+Nagłówek zawierający definicję struktury i funkcji regulatora PID. Regulator PID jest używany do sterowania prędkością silnika, uwzględniając błąd między zadanym a rzeczywistym stanem (np. prędkością), oraz oblicza odpowiednią wartość sterującą, która pozwala na utrzymanie zadanej prędkości.  
+
+
+{\ttfamily \#include "{}stm32l073xx.\+h"{}}\newline
+\doxysubsubsection*{Data Structures}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structpid__struct}{pid\+\_\+struct}}
+\begin{DoxyCompactList}\small\item\em Struktura przechowująca dane regulatora PID. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{pid__controller_8h_adeadf4dd769ddbbfa5c972bc9d5410bd}\label{pid__controller_8h_adeadf4dd769ddbbfa5c972bc9d5410bd} 
+\#define {\bfseries MOTOR\+\_\+\+Kp}~1.\+2
+\begin{DoxyCompactList}\small\item\em Wartość wzmocnienia członu proporcjonalnego. \end{DoxyCompactList}\item 
+\Hypertarget{pid__controller_8h_a6723c8e04a04f739ceb40f9950bbcc12}\label{pid__controller_8h_a6723c8e04a04f739ceb40f9950bbcc12} 
+\#define {\bfseries MOTOR\+\_\+\+Ki}~0.\+1
+\begin{DoxyCompactList}\small\item\em Wartość wzmocnienia członu całkującego. \end{DoxyCompactList}\item 
+\Hypertarget{pid__controller_8h_abb84442c122fd08150ba88d6eeaad4e9}\label{pid__controller_8h_abb84442c122fd08150ba88d6eeaad4e9} 
+\#define {\bfseries MOTOR\+\_\+\+Kd}~0.\+2
+\begin{DoxyCompactList}\small\item\em Wartość wzmocnienia członu różniczkującego. \end{DoxyCompactList}\item 
+\Hypertarget{pid__controller_8h_a2c6190a4e67259dfecd7886737e1a5f3}\label{pid__controller_8h_a2c6190a4e67259dfecd7886737e1a5f3} 
+\#define {\bfseries MOTOR\+\_\+\+ANTI\+\_\+\+WINDUP}~1000
+\begin{DoxyCompactList}\small\item\em Limit dla członu całkującego (anti-\/windup) \end{DoxyCompactList}\item 
+\Hypertarget{pid__controller_8h_a99b95cf07ea39afea00c690006052693}\label{pid__controller_8h_a99b95cf07ea39afea00c690006052693} 
+\#define {\bfseries MOTOR\+\_\+\+TOTAL\+\_\+\+ERROR\+\_\+\+LIMIT}~150
+\begin{DoxyCompactList}\small\item\em Limit maksymalnego błędu całkowitego. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{pid__controller_8h_ae5334be9eb2fb0dd92ad20c7f2dbf596}{pid\+\_\+init}} (\mbox{\hyperlink{structpid__struct}{pid\+\_\+struct}} \texorpdfstring{$\ast$}{*}pid\+\_\+data)
+\begin{DoxyCompactList}\small\item\em Inicjalizuje dane struktury PID. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{pid__controller_8h_adbef2849941170b93aeb2215a11e72fc}{pid\+\_\+reset}} (\mbox{\hyperlink{structpid__struct}{pid\+\_\+struct}} \texorpdfstring{$\ast$}{*}pid\+\_\+data)
+\begin{DoxyCompactList}\small\item\em Resetuje dane regulatora PID. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{pid__controller_8h_a160cf38280e0cde3978ea5b2f962fe6c}{pid\+\_\+calculate}} (\mbox{\hyperlink{structpid__struct}{pid\+\_\+struct}} \texorpdfstring{$\ast$}{*}pid\+\_\+data, int setpoint, int process\+\_\+variable)
+\begin{DoxyCompactList}\small\item\em Oblicza wartość sterującą na podstawie algorytmu PID. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Nagłówek zawierający definicję struktury i funkcji regulatora PID. Regulator PID jest używany do sterowania prędkością silnika, uwzględniając błąd między zadanym a rzeczywistym stanem (np. prędkością), oraz oblicza odpowiednią wartość sterującą, która pozwala na utrzymanie zadanej prędkości. 
+
+Created on\+: Jan 15, 2025 Author\+: Igor 
+
+\doxysubsection{Function Documentation}
+\Hypertarget{pid__controller_8h_a160cf38280e0cde3978ea5b2f962fe6c}\index{pid\_controller.h@{pid\_controller.h}!pid\_calculate@{pid\_calculate}}
+\index{pid\_calculate@{pid\_calculate}!pid\_controller.h@{pid\_controller.h}}
+\doxysubsubsection{\texorpdfstring{pid\_calculate()}{pid\_calculate()}}
+{\footnotesize\ttfamily \label{pid__controller_8h_a160cf38280e0cde3978ea5b2f962fe6c} 
+int pid\+\_\+calculate (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structpid__struct}{pid\+\_\+struct}} \texorpdfstring{$\ast$}{*}}]{pid\+\_\+data}{, }\item[{int}]{setpoint}{, }\item[{int}]{process\+\_\+variable}{}\end{DoxyParamCaption})}
+
+
+
+Oblicza wartość sterującą na podstawie algorytmu PID. 
+
+Funkcja oblicza odpowiedź regulatora PID na podstawie uchybu (różnicy między wartością zadaną a rzeczywistą) oraz współczynników PID. Uwzględnia również ograniczenia dla sumy błędów i członu całkującego (zapobiegając efektowi windup).
+
+
+\begin{DoxyParams}{Parameters}
+{\em pid\+\_\+data} & Wskaźnik do struktury \doxylink{structpid__struct}{pid\+\_\+struct}, zawierającej dane regulatora PID. \\
+\hline
+{\em setpoint} & Zadana wartość, do której dąży system (np. zadana prędkość). \\
+\hline
+{\em process\+\_\+variable} & Rzeczywista wartość zmiennej procesowej (np. zmierzona prędkość).\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Wartość sterująca, która powinna zostać zastosowana w systemie (np. wartość PWM).
+\end{DoxyReturn}
+Oblicza wartość sterującą na podstawie algorytmu PID.
+
+Funkcja oblicza odpowiedź regulatora PID na podstawie uchybu, czyli różnicy między zadanym punktem (setpoint) a zmienną procesową (process\+\_\+variable). Wykonywane są obliczenia dla członu proporcjonalnego, całkującego oraz różniczkującego, a następnie sumowanie wyników tych członów. Dodatkowo stosowane są ograniczenia na sumę błędów oraz człon całkujący, aby zapobiec efektowi "{}windup"{}.
+
+
+\begin{DoxyParams}{Parameters}
+{\em pid\+\_\+data} & Wskaźnik do struktury \doxylink{structpid__struct}{pid\+\_\+struct} reprezentującej regulator PID. \\
+\hline
+{\em setpoint} & Zadana wartość, do której dąży system. \\
+\hline
+{\em process\+\_\+variable} & Rzeczywista wartość zmiennej procesowej (np. zmierzona prędkość).\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Wartość sterująca, która ma być zastosowana w systemie (np. wartość PWM). 
+\end{DoxyReturn}
+\texorpdfstring{$<$}{<} Odpowiedź członu proporcjonalnego
+
+\texorpdfstring{$<$}{<} Odpowiedź członu całkującego
+
+\texorpdfstring{$<$}{<} Odpowiedź członu różniczkującegoHere is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{pid__controller_8h_a160cf38280e0cde3978ea5b2f962fe6c_icgraph}
+\end{center}
+\end{figure}
+\Hypertarget{pid__controller_8h_ae5334be9eb2fb0dd92ad20c7f2dbf596}\index{pid\_controller.h@{pid\_controller.h}!pid\_init@{pid\_init}}
+\index{pid\_init@{pid\_init}!pid\_controller.h@{pid\_controller.h}}
+\doxysubsubsection{\texorpdfstring{pid\_init()}{pid\_init()}}
+{\footnotesize\ttfamily \label{pid__controller_8h_ae5334be9eb2fb0dd92ad20c7f2dbf596} 
+void pid\+\_\+init (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structpid__struct}{pid\+\_\+struct}} \texorpdfstring{$\ast$}{*}}]{pid\+\_\+data}{}\end{DoxyParamCaption})}
+
+
+
+Inicjalizuje dane struktury PID. 
+
+Funkcja ustawia domyślne wartości współczynników PID oraz limity błędów, przygotowując strukturę do użycia w dalszych obliczeniach.
+
+
+\begin{DoxyParams}{Parameters}
+{\em pid\+\_\+data} & Wskaźnik do struktury \doxylink{structpid__struct}{pid\+\_\+struct}, którą należy zainicjalizować.\\
+\hline
+\end{DoxyParams}
+Inicjalizuje dane struktury PID.
+
+Funkcja ustawia początkowe wartości parametrów PID, w tym współczynniki Kp, Ki, Kd, ograniczenie dla sumy błędów (total\+\_\+error) oraz ograniczenie dla członu całkującego (anti\+\_\+windup\+\_\+limit). Inicjalizuje również zmienne przechowujące błąd z poprzedniego cyklu oraz całkowity błąd.
+
+
+\begin{DoxyParams}{Parameters}
+{\em pid\+\_\+data} & Wskaźnik do struktury \doxylink{structpid__struct}{pid\+\_\+struct} reprezentującej regulator PID. \\
+\hline
+\end{DoxyParams}
+\texorpdfstring{$<$}{<} Inicjalizacja błędu z poprzedniego cyklu
+
+\texorpdfstring{$<$}{<} Inicjalizacja całkowitego błęduHere is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=200pt]{pid__controller_8h_ae5334be9eb2fb0dd92ad20c7f2dbf596_icgraph}
+\end{center}
+\end{figure}
+\Hypertarget{pid__controller_8h_adbef2849941170b93aeb2215a11e72fc}\index{pid\_controller.h@{pid\_controller.h}!pid\_reset@{pid\_reset}}
+\index{pid\_reset@{pid\_reset}!pid\_controller.h@{pid\_controller.h}}
+\doxysubsubsection{\texorpdfstring{pid\_reset()}{pid\_reset()}}
+{\footnotesize\ttfamily \label{pid__controller_8h_adbef2849941170b93aeb2215a11e72fc} 
+void pid\+\_\+reset (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structpid__struct}{pid\+\_\+struct}} \texorpdfstring{$\ast$}{*}}]{pid\+\_\+data}{}\end{DoxyParamCaption})}
+
+
+
+Resetuje dane regulatora PID. 
+
+Funkcja zeruje błędy, zarówno bieżący, jak i całkowity, przygotowując regulator do nowego cyklu obliczeniowego.
+
+
+\begin{DoxyParams}{Parameters}
+{\em pid\+\_\+data} & Wskaźnik do struktury \doxylink{structpid__struct}{pid\+\_\+struct}, której stan ma zostać zresetowany.\\
+\hline
+\end{DoxyParams}
+Resetuje dane regulatora PID.
+
+Funkcja zeruje błędy, zarówno bieżący, jak i całkowity, przygotowując regulator do nowego cyklu obliczeń.
+
+
+\begin{DoxyParams}{Parameters}
+{\em pid\+\_\+data} & Wskaźnik do struktury \doxylink{structpid__struct}{pid\+\_\+struct} reprezentującej regulator PID. \\
+\hline
+\end{DoxyParams}
+\texorpdfstring{$<$}{<} Zerowanie błędu z poprzedniego cyklu
+
+\texorpdfstring{$<$}{<} Zerowanie całkowitego błęduHere is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{pid__controller_8h_adbef2849941170b93aeb2215a11e72fc_icgraph}
+\end{center}
+\end{figure}

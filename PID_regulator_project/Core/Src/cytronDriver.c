@@ -1,7 +1,7 @@
-/*
- * cytronDriver.c
+/**
+ * @file cytronDriver.c
  *
- * Implementacja sterownika silnika DC z użyciem sygnału PWM generowanego przez timer mikrokontrolera STM32.
+ * @brief Implementacja sterownika silnika DC z użyciem sygnału PWM generowanego przez timer mikrokontrolera STM32.
  *
  *  Created on: Dec 1, 2024
  *      Author: Igor

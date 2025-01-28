@@ -1,10 +1,10 @@
-/*
- * pid_controller.c
+/**
+ * @file pid_controller.c
  *
  *  Created on: Jan 15, 2025
  *      Author: Igor
  *
- * Implementacja algorytmu PID do sterowania prędkością silnika.
+ * @brief Implementacja algorytmu PID do sterowania prędkością silnika.
  * Zawiera funkcje inicjalizacji, resetowania stanu regulatora oraz obliczania
  * wartości sterującej na podstawie uchybu (różnicy między wartością zadaną a rzeczywistą).
  */

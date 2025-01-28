@@ -1,0 +1,15 @@
+<map id="Cytron_Set_Motor_Speed" name="Cytron_Set_Motor_Speed">
+<area shape="rect" id="Node000001" title="Ustawia prędkość obrotów silnika. Prędkość ograniczona do maksymalnej wartości ARR timera." alt="" coords="476,56,647,83"/>
+<area shape="rect" id="Node000002" href="$cytron_driver_8c.html#a2e535a3bea6910647233b446e7426164" title="Inicjalizuje sterownik silnika z początkową prędkością 0 i domyślnym kierunkiem." alt="" coords="288,5,413,32"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="487,54,408,35,410,30,489,49"/>
+<area shape="rect" id="Node000004" href="$motor_8c.html#a2357849fee1127ea55d647ccb81fc77e" title="Oblicza prędkość obrotową silnika w RPM i aktualizuje sygnał PWM sterujący silnikiem." alt="" coords="273,56,428,83"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="460,72,428,72,428,67,460,67"/>
+<area shape="rect" id="Node000006" href="$motor_8c.html#aa81662513da9526725dac5d06120ca71" title="Zatrzymuje silnik." alt="" coords="307,107,394,133"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="489,89,394,112,393,107,488,84"/>
+<area shape="rect" id="Node000003" href="$main_8c.html#a840291bc02cba5474a4cb46a9b9566fe" title="Główna funkcja programu, zawiera inicjalizację peryferiów oraz obsługę wystawionych flag." alt="" coords="90,5,140,32"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="272,21,140,21,140,16,272,16"/>
+<area shape="rect" id="Node000005" href="$main_8c.html#a8a3b0ad512a6e6c6157440b68d395eac" title="Callback do obsługi przerwania timera." alt="" coords="5,56,225,83"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="257,72,225,72,225,67,257,67"/>
+<area shape="rect" id="Node000007" href="$main_8c.html#a0cd91fd3a9608559c2a87a8ba6cba55f" title="Callback do obsługi przerwania zewnętrznego (przycisk)." alt="" coords="24,107,206,133"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="292,123,206,123,206,117,292,117"/>
+</map>

@@ -1,12 +1,12 @@
-/*
- * motor.c
+/**
+ * @file motor.c
  *
  *  Created on: Jan 14, 2025
  *      Author: Igor
  *
  *
- * Implementacja funkcji sterowania silnikiem, w tym inicjalizacja, obliczanie prędkości oraz
- * integracja z regulatorem PID i sterownikiem silnika Cytron.
+ * @brief	Implementacja funkcji sterowania silnikiem, w tym inicjalizacja, obliczanie prędkości oraz
+ * 			integracja z regulatorem PID i sterownikiem silnika Cytron.
  */
 
 #include <motor.h>

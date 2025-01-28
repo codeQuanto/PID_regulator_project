@@ -1,5 +1,5 @@
-/*
- * File: I2C_LCD.c
+/**
+ * @file: I2C_LCD.c
  * Driver Name: [[ I2C_LCD Display ]]
  * SW Layer:   ECUAL
  * Created on: Jan 28, 2024
@@ -115,6 +115,7 @@ static void I2C_LCD_Data(uint8_t I2C_LCD_InstanceIndex, uint8_t DATA)
 /**
  * @brief Wyświetla liczbę w formacie 4-znakowym na ekranie LCD.
  *
+ * Author: Igor
  * Funkcja formatuje liczbę całkowitą do formatu czteroznakowego (np. " 12 " dla liczby 12) i wyświetla ją na określonej pozycji ekranu LCD.
  * Liczba może być zarówno dodatnia, jak i ujemna. Funkcja obsługuje liczby w zakresie od -999 do 999.
  * Wartości większe niż 999 są wyświetlane tylko w setkach, dziesiątkach i jedności, natomiast liczby mniejsze niż 0 mają wyświetlany znak '-' na początku.

@@ -1,7 +1,7 @@
-/*
- * cytronDriver.h
+/**
+ * @file cytronDriver.h
  *
- * Sterownik silnika DC do obsługi prędkości i kierunku obrotów za pomocą PWM.
+ * @brief Sterownik silnika DC do obsługi prędkości i kierunku obrotów za pomocą PWM.
  *
  * Struktury:
  * - driver_struct: Zawiera wskaźnik do timera PWM, kierunek obrotów i aktualny kanał timera.

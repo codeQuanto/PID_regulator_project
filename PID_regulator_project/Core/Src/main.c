@@ -101,12 +101,10 @@ volatile uint32_t last_EXTI_interrupt_time; /**< Zmienna do cyfrowego debouncing
 /* USER CODE END 0 */
 
 /**
- * @brief  Główna funkcja programu, zawiera inicjalizację peryferiów oraz logikę sterowania silnikiem.
+ * @brief  Główna funkcja programu, zawiera inicjalizację peryferiów oraz obsługę wystawionych flag.
  *
  * Funkcja inicjalizuje wszystkie peryferia, w tym ADC, PWM, enkoder, UART i LCD. Następnie
- * w pętli głównej programu monitoruje sygnały wejściowe (np. przyciski, ADC), steruje
- * prędkością silnika na podstawie algorytmu PID oraz wyświetla aktualny stan na wyświetlaczu LCD.
- * Program obsługuje także przesyłanie danych przez UART.
+ * w pętli głównej programu monitoruje flagi i warunkowo wysyła dane przez UART oraz aktualizuje stan ekranu LCD
  *
  * @retval int Zwraca 0 w przypadku poprawnego zakończenia.
  */
@@ -157,10 +155,10 @@ int main(void) {
 	pid_init(&(motor_instance.pid_controller));
 
 	/* Uruchomienie PWM, enkodera oraz licznika generującego przerwanie */
-	HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_1); /**timer do generacji PWM*/
+	HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_1); /*timer do generacji PWM*/
 	HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_2);
-	HAL_TIM_Encoder_Start(&htim3, TIM_CHANNEL_ALL); /**timer do obslugi enkodera*/
-	HAL_TIM_Base_Start_IT(&htim21); /**timer do generowania przerwania*/
+	HAL_TIM_Encoder_Start(&htim3, TIM_CHANNEL_ALL); /*timer do obslugi enkodera*/
+	HAL_TIM_Base_Start_IT(&htim21); /*timer do generowania przerwania*/
 
 	/* Uruchomienie i kalibracja ADC */
 	HAL_ADCEx_Calibration_Start(&hadc, ADC_SINGLE_ENDED);

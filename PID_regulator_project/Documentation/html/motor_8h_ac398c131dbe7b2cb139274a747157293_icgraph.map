@@ -1,0 +1,5 @@
+<map id="motor_set_RPM_speed" name="motor_set_RPM_speed">
+<area shape="rect" id="Node000001" title="Ustawia zadaną prędkość obrotową silnika w RPM." alt="" coords="273,5,431,32"/>
+<area shape="rect" id="Node000002" href="$main_8c.html#a8a3b0ad512a6e6c6157440b68d395eac" title="Callback do obsługi przerwania timera." alt="" coords="5,5,225,32"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="257,21,225,21,225,16,257,16"/>
+</map>

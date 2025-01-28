@@ -1,5 +1,5 @@
-/*
- * File: I2C_LCD.h
+/**
+ * @file: I2C_LCD.h
  * Driver Name: [[ I2C_LCD Display ]]
  * SW Layer:   ECUAL
  * Created on: Jan 28, 2024
@@ -19,7 +19,19 @@
 #define I2C_LCD_1	0	// I2C_LCD Instance Number 1 (Add more if you need)
 
 //-----[ Prototypes For All User External Functions ]-----
-
+/**
+ * @brief Wyświetla liczbę w formacie 4-znakowym na ekranie LCD.
+ *
+ * @Author: Igor
+ * Funkcja formatuje liczbę całkowitą do formatu czteroznakowego (np. " 12 " dla liczby 12) i wyświetla ją na określonej pozycji ekranu LCD.
+ * Liczba może być zarówno dodatnia, jak i ujemna. Funkcja obsługuje liczby w zakresie od -999 do 999.
+ * Wartości większe niż 999 są wyświetlane tylko w setkach, dziesiątkach i jedności, natomiast liczby mniejsze niż 0 mają wyświetlany znak '-' na początku.
+ *
+ * @param I2C_LCD_InstanceIndex Indeks instancji LCD (jeśli obsługiwane są różne urządzenia LCD).
+ * @param value Liczba całkowita, która ma zostać wyświetlona na ekranie.
+ * @param Col Kolumna, w której ma zostać ustawiony kursor (indeks zaczyna się od 0).
+ * @param Row Wiersz, w którym ma zostać ustawiony kursor (indeks zaczyna się od 0).
+ */
 void I2C_LCD_DisplayMotorFormat(uint8_t I2C_LCD_InstanceIndex, int32_t value, uint8_t Col, uint8_t Row); //moja funckja do wyswietlania wartosci predkosci na odpowiednich miejscach
 
 void I2C_LCD_Init(uint8_t I2C_LCD_InstanceIndex);

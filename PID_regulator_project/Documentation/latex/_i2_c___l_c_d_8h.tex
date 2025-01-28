@@ -1,0 +1,121 @@
+\doxysection{C\+:/\+Users/\+Igor/\+STM32\+Cube\+IDE/workspace\+\_\+1.16.1/\+PID\+\_\+regulator\+\_\+project/\+Core/\+Inc/\+I2\+C\+\_\+\+LCD\+\_\+\+Inc/\+I2\+C\+\_\+\+LCD.h File Reference}
+\hypertarget{_i2_c___l_c_d_8h}{}\label{_i2_c___l_c_d_8h}\index{C:/Users/Igor/STM32CubeIDE/workspace\_1.16.1/PID\_regulator\_project/Core/Inc/I2C\_LCD\_Inc/I2C\_LCD.h@{C:/Users/Igor/STM32CubeIDE/workspace\_1.16.1/PID\_regulator\_project/Core/Inc/I2C\_LCD\_Inc/I2C\_LCD.h}}
+{\ttfamily \#include "{}stdint.\+h"{}}\newline
+\doxysubsubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{_i2_c___l_c_d_8h_a21fef37fb4709310eb716e74eb442da1}\label{_i2_c___l_c_d_8h_a21fef37fb4709310eb716e74eb442da1} 
+\#define {\bfseries I2\+C\+\_\+\+LCD\+\_\+\+MAX}~1
+\item 
+\Hypertarget{_i2_c___l_c_d_8h_a0f0c790ea55da65446fe00e42ae28d86}\label{_i2_c___l_c_d_8h_a0f0c790ea55da65446fe00e42ae28d86} 
+\#define {\bfseries I2\+C\+\_\+\+LCD\+\_\+1}~0
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{_i2_c___l_c_d_8h_ad6e6a8b14e99bf67486c7681b0998ca1}{I2\+C\+\_\+\+LCD\+\_\+\+Display\+Motor\+Format}} (uint8\+\_\+t I2\+C\+\_\+\+LCD\+\_\+\+Instance\+Index, int32\+\_\+t value, uint8\+\_\+t Col, uint8\+\_\+t Row)
+\begin{DoxyCompactList}\small\item\em Wyświetla liczbę w formacie 4-\/znakowym na ekranie LCD. \end{DoxyCompactList}\item 
+\Hypertarget{_i2_c___l_c_d_8h_a0a9e14036159adef55bb0fd43481ed3c}\label{_i2_c___l_c_d_8h_a0a9e14036159adef55bb0fd43481ed3c} 
+void {\bfseries I2\+C\+\_\+\+LCD\+\_\+\+Init} (uint8\+\_\+t I2\+C\+\_\+\+LCD\+\_\+\+Instance\+Index)
+\item 
+\Hypertarget{_i2_c___l_c_d_8h_a3eb5073f7c40936788b4bd3df99a88b8}\label{_i2_c___l_c_d_8h_a3eb5073f7c40936788b4bd3df99a88b8} 
+void {\bfseries I2\+C\+\_\+\+LCD\+\_\+\+Clear} (uint8\+\_\+t I2\+C\+\_\+\+LCD\+\_\+\+Instance\+Index)
+\item 
+\Hypertarget{_i2_c___l_c_d_8h_a16224ceb5534bea333f549ac9f0d9033}\label{_i2_c___l_c_d_8h_a16224ceb5534bea333f549ac9f0d9033} 
+void {\bfseries I2\+C\+\_\+\+LCD\+\_\+\+Home} (uint8\+\_\+t I2\+C\+\_\+\+LCD\+\_\+\+Instance\+Index)
+\item 
+\Hypertarget{_i2_c___l_c_d_8h_a005db016086569b8b12a59f71b959997}\label{_i2_c___l_c_d_8h_a005db016086569b8b12a59f71b959997} 
+void {\bfseries I2\+C\+\_\+\+LCD\+\_\+\+Set\+Cursor} (uint8\+\_\+t I2\+C\+\_\+\+LCD\+\_\+\+Instance\+Index, uint8\+\_\+t Col, uint8\+\_\+t Row)
+\item 
+\Hypertarget{_i2_c___l_c_d_8h_aa4b6411c4ae62374b6cf4db6fdd66664}\label{_i2_c___l_c_d_8h_aa4b6411c4ae62374b6cf4db6fdd66664} 
+void {\bfseries I2\+C\+\_\+\+LCD\+\_\+\+Write\+Char} (uint8\+\_\+t I2\+C\+\_\+\+LCD\+\_\+\+Instance\+Index, char Ch)
+\item 
+\Hypertarget{_i2_c___l_c_d_8h_af99cb6a8145992bbbde3a5c5deedffd0}\label{_i2_c___l_c_d_8h_af99cb6a8145992bbbde3a5c5deedffd0} 
+void {\bfseries I2\+C\+\_\+\+LCD\+\_\+\+Write\+String} (uint8\+\_\+t I2\+C\+\_\+\+LCD\+\_\+\+Instance\+Index, char \texorpdfstring{$\ast$}{*}Str)
+\item 
+\Hypertarget{_i2_c___l_c_d_8h_a09e4cf202387ecf6546241f59d67a16d}\label{_i2_c___l_c_d_8h_a09e4cf202387ecf6546241f59d67a16d} 
+void {\bfseries I2\+C\+\_\+\+LCD\+\_\+\+Shift\+Left} (uint8\+\_\+t I2\+C\+\_\+\+LCD\+\_\+\+Instance\+Index)
+\item 
+\Hypertarget{_i2_c___l_c_d_8h_ab7ee3e61512fe586f48e62d01e980137}\label{_i2_c___l_c_d_8h_ab7ee3e61512fe586f48e62d01e980137} 
+void {\bfseries I2\+C\+\_\+\+LCD\+\_\+\+Shift\+Right} (uint8\+\_\+t I2\+C\+\_\+\+LCD\+\_\+\+Instance\+Index)
+\item 
+\Hypertarget{_i2_c___l_c_d_8h_a843c76a852f7367d508418a35028cd46}\label{_i2_c___l_c_d_8h_a843c76a852f7367d508418a35028cd46} 
+void {\bfseries I2\+C\+\_\+\+LCD\+\_\+\+Backlight} (uint8\+\_\+t I2\+C\+\_\+\+LCD\+\_\+\+Instance\+Index)
+\item 
+\Hypertarget{_i2_c___l_c_d_8h_a6b6687a8443ce9531382987da4a67cac}\label{_i2_c___l_c_d_8h_a6b6687a8443ce9531382987da4a67cac} 
+void {\bfseries I2\+C\+\_\+\+LCD\+\_\+\+No\+Backlight} (uint8\+\_\+t I2\+C\+\_\+\+LCD\+\_\+\+Instance\+Index)
+\item 
+\Hypertarget{_i2_c___l_c_d_8h_afc2b4947bc39d68682c8347fab6ef1cf}\label{_i2_c___l_c_d_8h_afc2b4947bc39d68682c8347fab6ef1cf} 
+void {\bfseries I2\+C\+\_\+\+LCD\+\_\+\+Display} (uint8\+\_\+t I2\+C\+\_\+\+LCD\+\_\+\+Instance\+Index)
+\item 
+\Hypertarget{_i2_c___l_c_d_8h_a9ae4d861b396dbe7a0fcd7075f3a37e5}\label{_i2_c___l_c_d_8h_a9ae4d861b396dbe7a0fcd7075f3a37e5} 
+void {\bfseries I2\+C\+\_\+\+LCD\+\_\+\+No\+Display} (uint8\+\_\+t I2\+C\+\_\+\+LCD\+\_\+\+Instance\+Index)
+\item 
+\Hypertarget{_i2_c___l_c_d_8h_ab9183391ca37da2021c57b0c12f10849}\label{_i2_c___l_c_d_8h_ab9183391ca37da2021c57b0c12f10849} 
+void {\bfseries I2\+C\+\_\+\+LCD\+\_\+\+Cursor} (uint8\+\_\+t I2\+C\+\_\+\+LCD\+\_\+\+Instance\+Index)
+\item 
+\Hypertarget{_i2_c___l_c_d_8h_a73d9514307f71e88e1c37511eb62cc2a}\label{_i2_c___l_c_d_8h_a73d9514307f71e88e1c37511eb62cc2a} 
+void {\bfseries I2\+C\+\_\+\+LCD\+\_\+\+No\+Cursor} (uint8\+\_\+t I2\+C\+\_\+\+LCD\+\_\+\+Instance\+Index)
+\item 
+\Hypertarget{_i2_c___l_c_d_8h_a1bfa7bb79cc3297a49dffb757a605c9e}\label{_i2_c___l_c_d_8h_a1bfa7bb79cc3297a49dffb757a605c9e} 
+void {\bfseries I2\+C\+\_\+\+LCD\+\_\+\+Blink} (uint8\+\_\+t I2\+C\+\_\+\+LCD\+\_\+\+Instance\+Index)
+\item 
+\Hypertarget{_i2_c___l_c_d_8h_a7255349363fd4f76077f0f29bddfa3fb}\label{_i2_c___l_c_d_8h_a7255349363fd4f76077f0f29bddfa3fb} 
+void {\bfseries I2\+C\+\_\+\+LCD\+\_\+\+No\+Blink} (uint8\+\_\+t I2\+C\+\_\+\+LCD\+\_\+\+Instance\+Index)
+\item 
+\Hypertarget{_i2_c___l_c_d_8h_a2a73d9efb03a236fe954db9809a00599}\label{_i2_c___l_c_d_8h_a2a73d9efb03a236fe954db9809a00599} 
+void {\bfseries I2\+C\+\_\+\+LCD\+\_\+\+Create\+Custom\+Char} (uint8\+\_\+t I2\+C\+\_\+\+LCD\+\_\+\+Instance\+Index, uint8\+\_\+t Char\+Index, const uint8\+\_\+t \texorpdfstring{$\ast$}{*}Char\+Map)
+\item 
+\Hypertarget{_i2_c___l_c_d_8h_a4e34ca14845377b1fca3fe121fed16ae}\label{_i2_c___l_c_d_8h_a4e34ca14845377b1fca3fe121fed16ae} 
+void {\bfseries I2\+C\+\_\+\+LCD\+\_\+\+Print\+Custom\+Char} (uint8\+\_\+t I2\+C\+\_\+\+LCD\+\_\+\+Instance\+Index, uint8\+\_\+t Char\+Index)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Driver Name\+: \mbox{[}\mbox{[} I2\+C\+\_\+\+LCD Display \mbox{]}\mbox{]} SW Layer\+: ECUAL Created on\+: Jan 28, 2024 \hypertarget{_i2_c___l_c_d_8h_autotoc_md0}{}\doxysubsubsection{\texorpdfstring{Author\+: Khaled Magdy}{Author\+: Khaled Magdy}}\label{_i2_c___l_c_d_8h_autotoc_md0}
+For More Information, Tutorials, etc. Visit Website\+: www.\+Deep\+Blue\+Mbedded.\+com 
+
+\doxysubsection{Function Documentation}
+\Hypertarget{_i2_c___l_c_d_8h_ad6e6a8b14e99bf67486c7681b0998ca1}\index{I2C\_LCD.h@{I2C\_LCD.h}!I2C\_LCD\_DisplayMotorFormat@{I2C\_LCD\_DisplayMotorFormat}}
+\index{I2C\_LCD\_DisplayMotorFormat@{I2C\_LCD\_DisplayMotorFormat}!I2C\_LCD.h@{I2C\_LCD.h}}
+\doxysubsubsection{\texorpdfstring{I2C\_LCD\_DisplayMotorFormat()}{I2C\_LCD\_DisplayMotorFormat()}}
+{\footnotesize\ttfamily \label{_i2_c___l_c_d_8h_ad6e6a8b14e99bf67486c7681b0998ca1} 
+void I2\+C\+\_\+\+LCD\+\_\+\+Display\+Motor\+Format (\begin{DoxyParamCaption}\item[{uint8\+\_\+t}]{I2\+C\+\_\+\+LCD\+\_\+\+Instance\+Index}{, }\item[{int32\+\_\+t}]{value}{, }\item[{uint8\+\_\+t}]{Col}{, }\item[{uint8\+\_\+t}]{Row}{}\end{DoxyParamCaption})}
+
+
+
+Wyświetla liczbę w formacie 4-\/znakowym na ekranie LCD. 
+
+@\+Author\+: Igor Funkcja formatuje liczbę całkowitą do formatu czteroznakowego (np. "{} 12 "{} dla liczby 12) i wyświetla ją na określonej pozycji ekranu LCD. Liczba może być zarówno dodatnia, jak i ujemna. Funkcja obsługuje liczby w zakresie od -\/999 do 999. Wartości większe niż 999 są wyświetlane tylko w setkach, dziesiątkach i jedności, natomiast liczby mniejsze niż 0 mają wyświetlany znak \textquotesingle{}-\/\textquotesingle{} na początku.
+
+
+\begin{DoxyParams}{Parameters}
+{\em I2\+C\+\_\+\+LCD\+\_\+\+Instance\+Index} & Indeks instancji LCD (jeśli obsługiwane są różne urządzenia LCD). \\
+\hline
+{\em value} & Liczba całkowita, która ma zostać wyświetlona na ekranie. \\
+\hline
+{\em Col} & Kolumna, w której ma zostać ustawiony kursor (indeks zaczyna się od 0). \\
+\hline
+{\em Row} & Wiersz, w którym ma zostać ustawiony kursor (indeks zaczyna się od 0).\\
+\hline
+\end{DoxyParams}
+Author\+: Igor Funkcja formatuje liczbę całkowitą do formatu czteroznakowego (np. "{} 12 "{} dla liczby 12) i wyświetla ją na określonej pozycji ekranu LCD. Liczba może być zarówno dodatnia, jak i ujemna. Funkcja obsługuje liczby w zakresie od -\/999 do 999. Wartości większe niż 999 są wyświetlane tylko w setkach, dziesiątkach i jedności, natomiast liczby mniejsze niż 0 mają wyświetlany znak \textquotesingle{}-\/\textquotesingle{} na początku.
+
+
+\begin{DoxyParams}{Parameters}
+{\em I2\+C\+\_\+\+LCD\+\_\+\+Instance\+Index} & Indeks instancji LCD (jeśli obsługiwane są różne urządzenia LCD). \\
+\hline
+{\em value} & Liczba całkowita, która ma zostać wyświetlona na ekranie. \\
+\hline
+{\em Col} & Kolumna, w której ma zostać ustawiony kursor (indeks zaczyna się od 0). \\
+\hline
+{\em Row} & Wiersz, w którym ma zostać ustawiony kursor (indeks zaczyna się od 0). \\
+\hline
+\end{DoxyParams}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=304pt]{_i2_c___l_c_d_8h_ad6e6a8b14e99bf67486c7681b0998ca1_icgraph}
+\end{center}
+\end{figure}

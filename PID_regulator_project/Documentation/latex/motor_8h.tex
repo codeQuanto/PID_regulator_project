@@ -1,0 +1,245 @@
+\doxysection{C\+:/\+Users/\+Igor/\+STM32\+Cube\+IDE/workspace\+\_\+1.16.1/\+PID\+\_\+regulator\+\_\+project/\+Core/\+Inc/motor.h File Reference}
+\hypertarget{motor_8h}{}\label{motor_8h}\index{C:/Users/Igor/STM32CubeIDE/workspace\_1.16.1/PID\_regulator\_project/Core/Inc/motor.h@{C:/Users/Igor/STM32CubeIDE/workspace\_1.16.1/PID\_regulator\_project/Core/Inc/motor.h}}
+
+
+Nagłówek dla funkcji sterowania silnikiem, w tym deklaracje struktury \doxylink{structmotor__struct}{motor\+\_\+struct} oraz funkcji do inicjalizacji, obliczania prędkości, ustawiania zadanej prędkości oraz zatrzymywania silnika. Zawiera również definicje stałych konfiguracyjnych związanych z enkoderem i sterowaniem silnikiem.  
+
+
+{\ttfamily \#include "{}stm32l0xx.\+h"{}}\newline
+{\ttfamily \#include "{}pid\+\_\+controller.\+h"{}}\newline
+{\ttfamily \#include "{}cytron\+Driver.\+h"{}}\newline
+\doxysubsubsection*{Data Structures}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structmotor__struct}{motor\+\_\+struct}}
+\begin{DoxyCompactList}\small\item\em Struktura reprezentująca instancję silnika. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{motor_8h_a8cdc17f43c9f3850f60d04f98216fc13}\label{motor_8h_a8cdc17f43c9f3850f60d04f98216fc13} 
+\#define {\bfseries ENCODER\+\_\+\+RESOLUTION}~8
+\begin{DoxyCompactList}\small\item\em Wynika z hardware\textquotesingle{}u. \end{DoxyCompactList}\item 
+\Hypertarget{motor_8h_acdfd077d1c05e1391f3adab21640b1ac}\label{motor_8h_acdfd077d1c05e1391f3adab21640b1ac} 
+\#define {\bfseries TIMER\+\_\+\+CONFIGURATION\+\_\+\+BOTH\+\_\+\+EDGES}~4
+\begin{DoxyCompactList}\small\item\em Liczba zliczeń na jeden impuls. \end{DoxyCompactList}\item 
+\Hypertarget{motor_8h_abf0ad57c28669568a5971fffaa206061}\label{motor_8h_abf0ad57c28669568a5971fffaa206061} 
+\#define {\bfseries MOTOR\+\_\+\+GEAR}~120
+\begin{DoxyCompactList}\small\item\em Przełożenie silnika. \end{DoxyCompactList}\item 
+\Hypertarget{motor_8h_a4c8c3006a33f197f8dfa6d434312e6db}\label{motor_8h_a4c8c3006a33f197f8dfa6d434312e6db} 
+\#define {\bfseries TIMER\+\_\+\+INTERRUPT\+\_\+\+FREQUENCY}~10
+\begin{DoxyCompactList}\small\item\em Częstotliwość przerwań (Hz) \end{DoxyCompactList}\item 
+\Hypertarget{motor_8h_a3a8b91d639dd9171c7f75297f2eee349}\label{motor_8h_a3a8b91d639dd9171c7f75297f2eee349} 
+\#define {\bfseries SECONDS\+\_\+\+IN\+\_\+\+MINUTE}~60
+\begin{DoxyCompactList}\small\item\em Sekundy w minucie. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{motor_8h_ad3bea19173b3bbe7f47c9aecc35fbe04}{motor\+\_\+init}} (\mbox{\hyperlink{structmotor__struct}{motor\+\_\+struct}} \texorpdfstring{$\ast$}{*}motor, TIM\+\_\+\+Handle\+Type\+Def \texorpdfstring{$\ast$}{*}encoder\+\_\+tim)
+\begin{DoxyCompactList}\small\item\em Inicjalizuje strukturę sterownika silnika. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{motor_8h_aa27a2c0a9400261546aa209af25dd3c0}{motor\+\_\+update\+\_\+count}} (\mbox{\hyperlink{structmotor__struct}{motor\+\_\+struct}} \texorpdfstring{$\ast$}{*}motor)
+\begin{DoxyCompactList}\small\item\em Aktualizuje licznik impulsów enkodera. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{motor_8h_a2357849fee1127ea55d647ccb81fc77e}{motor\+\_\+calculate\+\_\+speed}} (\mbox{\hyperlink{structmotor__struct}{motor\+\_\+struct}} \texorpdfstring{$\ast$}{*}motor)
+\begin{DoxyCompactList}\small\item\em Oblicza prędkość obrotową silnika w RPM i aktualizuje sygnał PWM sterujący silnikiem. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{motor_8h_ac398c131dbe7b2cb139274a747157293}{motor\+\_\+set\+\_\+\+RPM\+\_\+speed}} (\mbox{\hyperlink{structmotor__struct}{motor\+\_\+struct}} \texorpdfstring{$\ast$}{*}motor, int RPM\+\_\+speed)
+\begin{DoxyCompactList}\small\item\em Ustawia zadaną prędkość obrotową silnika w RPM. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{motor_8h_aa81662513da9526725dac5d06120ca71}{motor\+\_\+stop}} (\mbox{\hyperlink{structmotor__struct}{motor\+\_\+struct}} \texorpdfstring{$\ast$}{*}motor)
+\begin{DoxyCompactList}\small\item\em Zatrzymuje silnik. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Nagłówek dla funkcji sterowania silnikiem, w tym deklaracje struktury \doxylink{structmotor__struct}{motor\+\_\+struct} oraz funkcji do inicjalizacji, obliczania prędkości, ustawiania zadanej prędkości oraz zatrzymywania silnika. Zawiera również definicje stałych konfiguracyjnych związanych z enkoderem i sterowaniem silnikiem. 
+
+Created on\+: Jan 14, 2025 Author\+: Igor 
+
+\doxysubsection{Function Documentation}
+\Hypertarget{motor_8h_a2357849fee1127ea55d647ccb81fc77e}\index{motor.h@{motor.h}!motor\_calculate\_speed@{motor\_calculate\_speed}}
+\index{motor\_calculate\_speed@{motor\_calculate\_speed}!motor.h@{motor.h}}
+\doxysubsubsection{\texorpdfstring{motor\_calculate\_speed()}{motor\_calculate\_speed()}}
+{\footnotesize\ttfamily \label{motor_8h_a2357849fee1127ea55d647ccb81fc77e} 
+void motor\+\_\+calculate\+\_\+speed (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structmotor__struct}{motor\+\_\+struct}} \texorpdfstring{$\ast$}{*}}]{motor}{}\end{DoxyParamCaption})}
+
+
+
+Oblicza prędkość obrotową silnika w RPM i aktualizuje sygnał PWM sterujący silnikiem. 
+
+
+\begin{DoxyItemize}
+\item 
+\end{DoxyItemize}
+
+Na podstawie liczby impulsów z enkodera oraz ustawień systemu (częstotliwość przerwań, rozdzielczość enkodera, przekładnia) wylicza prędkość obrotową silnika.
+
+
+\begin{DoxyParams}{Parameters}
+{\em motor} & Wskaźnik do struktury \doxylink{structmotor__struct}{motor\+\_\+struct}.\\
+\hline
+\end{DoxyParams}
+Oblicza prędkość obrotową silnika w RPM i aktualizuje sygnał PWM sterujący silnikiem.
+
+Na podstawie liczby impulsów odczytanych z enkodera i parametrów systemu (częstotliwości przerwań, rozdzielczości enkodera oraz przekładni) wylicza prędkość obrotową silnika. Wynik jest przekazywany do kontrolera PID, a wynik jego działania aktualizuje wartość sygnału PWM sterującego silnikiem.
+
+
+\begin{DoxyParams}{Parameters}
+{\em motor} & Wskaźnik do struktury \doxylink{structmotor__struct}{motor\+\_\+struct}. \\
+\hline
+\end{DoxyParams}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{motor_8h_a2357849fee1127ea55d647ccb81fc77e_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{motor_8h_a2357849fee1127ea55d647ccb81fc77e_icgraph}
+\end{center}
+\end{figure}
+\Hypertarget{motor_8h_ad3bea19173b3bbe7f47c9aecc35fbe04}\index{motor.h@{motor.h}!motor\_init@{motor\_init}}
+\index{motor\_init@{motor\_init}!motor.h@{motor.h}}
+\doxysubsubsection{\texorpdfstring{motor\_init()}{motor\_init()}}
+{\footnotesize\ttfamily \label{motor_8h_ad3bea19173b3bbe7f47c9aecc35fbe04} 
+void motor\+\_\+init (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structmotor__struct}{motor\+\_\+struct}} \texorpdfstring{$\ast$}{*}}]{motor}{, }\item[{TIM\+\_\+\+Handle\+Type\+Def \texorpdfstring{$\ast$}{*}}]{encoder\+\_\+tim}{}\end{DoxyParamCaption})}
+
+
+
+Inicjalizuje strukturę sterownika silnika. 
+
+Ustawia parametry sterownika silnika, w tym rozdzielczość enkodera oraz timer.
+
+
+\begin{DoxyParams}{Parameters}
+{\em motor} & Wskaźnik do struktury \doxylink{structmotor__struct}{motor\+\_\+struct} reprezentującej sterownik silnika. \\
+\hline
+{\em encoder\+\_\+tim} & Wskaźnik do uchwytu timera obsługującego enkoder.\\
+\hline
+\end{DoxyParams}
+Ustawia domyślne wartości parametrów struktury oraz inicjalizuje rozdzielczość enkodera na podstawie zdefiniowanych stałych.
+
+
+\begin{DoxyParams}{Parameters}
+{\em motor} & Wskaźnik do struktury \doxylink{structmotor__struct}{motor\+\_\+struct} reprezentującej sterownik silnika. \\
+\hline
+{\em encoder\+\_\+tim} & Wskaźnik do uchwytu timera obsługującego enkoder. \\
+\hline
+\end{DoxyParams}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=212pt]{motor_8h_ad3bea19173b3bbe7f47c9aecc35fbe04_icgraph}
+\end{center}
+\end{figure}
+\Hypertarget{motor_8h_ac398c131dbe7b2cb139274a747157293}\index{motor.h@{motor.h}!motor\_set\_RPM\_speed@{motor\_set\_RPM\_speed}}
+\index{motor\_set\_RPM\_speed@{motor\_set\_RPM\_speed}!motor.h@{motor.h}}
+\doxysubsubsection{\texorpdfstring{motor\_set\_RPM\_speed()}{motor\_set\_RPM\_speed()}}
+{\footnotesize\ttfamily \label{motor_8h_ac398c131dbe7b2cb139274a747157293} 
+void motor\+\_\+set\+\_\+\+RPM\+\_\+speed (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structmotor__struct}{motor\+\_\+struct}} \texorpdfstring{$\ast$}{*}}]{motor}{, }\item[{int}]{RPM\+\_\+speed}{}\end{DoxyParamCaption})}
+
+
+
+Ustawia zadaną prędkość obrotową silnika w RPM. 
+
+Resetuje stan kontrolera PID i zapisuje nową wartość zadanej prędkości.
+
+
+\begin{DoxyParams}{Parameters}
+{\em motor} & Wskaźnik do struktury \doxylink{structmotor__struct}{motor\+\_\+struct}. \\
+\hline
+{\em RPM\+\_\+speed} & Zadana prędkość obrotowa w RPM.\\
+\hline
+\end{DoxyParams}
+Jeżeli nowa prędkość różni się od bieżącej, resetuje stan kontrolera PID i zapisuje nową wartość zadanej prędkości.
+
+
+\begin{DoxyParams}{Parameters}
+{\em motor} & Wskaźnik do struktury \doxylink{structmotor__struct}{motor\+\_\+struct}. \\
+\hline
+{\em RPM\+\_\+speed} & Zadana prędkość obrotowa w RPM. \\
+\hline
+\end{DoxyParams}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=291pt]{motor_8h_ac398c131dbe7b2cb139274a747157293_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{motor_8h_ac398c131dbe7b2cb139274a747157293_icgraph}
+\end{center}
+\end{figure}
+\Hypertarget{motor_8h_aa81662513da9526725dac5d06120ca71}\index{motor.h@{motor.h}!motor\_stop@{motor\_stop}}
+\index{motor\_stop@{motor\_stop}!motor.h@{motor.h}}
+\doxysubsubsection{\texorpdfstring{motor\_stop()}{motor\_stop()}}
+{\footnotesize\ttfamily \label{motor_8h_aa81662513da9526725dac5d06120ca71} 
+void motor\+\_\+stop (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structmotor__struct}{motor\+\_\+struct}} \texorpdfstring{$\ast$}{*}}]{motor}{}\end{DoxyParamCaption})}
+
+
+
+Zatrzymuje silnik. 
+
+Resetuje wszystkie parametry sterowania silnikiem do wartości początkowych i ustawia prędkość PWM na 0.
+
+
+\begin{DoxyParams}{Parameters}
+{\em motor} & Wskaźnik do struktury \doxylink{structmotor__struct}{motor\+\_\+struct}.\\
+\hline
+\end{DoxyParams}
+Resetuje zadaną prędkość, zmierzoną prędkość oraz sygnał PWM do wartości początkowych. Ustawia prędkość PWM na 0.
+
+
+\begin{DoxyParams}{Parameters}
+{\em motor} & Wskaźnik do struktury \doxylink{structmotor__struct}{motor\+\_\+struct}. \\
+\hline
+\end{DoxyParams}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=309pt]{motor_8h_aa81662513da9526725dac5d06120ca71_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=318pt]{motor_8h_aa81662513da9526725dac5d06120ca71_icgraph}
+\end{center}
+\end{figure}
+\Hypertarget{motor_8h_aa27a2c0a9400261546aa209af25dd3c0}\index{motor.h@{motor.h}!motor\_update\_count@{motor\_update\_count}}
+\index{motor\_update\_count@{motor\_update\_count}!motor.h@{motor.h}}
+\doxysubsubsection{\texorpdfstring{motor\_update\_count()}{motor\_update\_count()}}
+{\footnotesize\ttfamily \label{motor_8h_aa27a2c0a9400261546aa209af25dd3c0} 
+void motor\+\_\+update\+\_\+count (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structmotor__struct}{motor\+\_\+struct}} \texorpdfstring{$\ast$}{*}}]{motor}{}\end{DoxyParamCaption})}
+
+
+
+Aktualizuje licznik impulsów enkodera. 
+
+Zczytuje bieżącą wartość licznika timera i zapisuje ją do struktury silnika, a następnie resetuje licznik.
+
+
+\begin{DoxyParams}{Parameters}
+{\em motor} & Wskaźnik do struktury \doxylink{structmotor__struct}{motor\+\_\+struct}.\\
+\hline
+\end{DoxyParams}
+Zczytuje aktualną wartość z licznika timera obsługującego enkoder, zapisuje ją do struktury sterownika silnika, a następnie zeruje licznik timera.
+
+
+\begin{DoxyParams}{Parameters}
+{\em motor} & Wskaźnik do struktury \doxylink{structmotor__struct}{motor\+\_\+struct}. \\
+\hline
+\end{DoxyParams}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{motor_8h_aa27a2c0a9400261546aa209af25dd3c0_icgraph}
+\end{center}
+\end{figure}

@@ -1,10 +1,10 @@
-/*
- * motor.h
+/**
+ * @file motor.h
  *
  *  Created on: Jan 14, 2025
  *      Author: Igor
  *
- * Nagłówek dla funkcji sterowania silnikiem, w tym deklaracje struktury motor_struct oraz
+ * @brief Nagłówek dla funkcji sterowania silnikiem, w tym deklaracje struktury motor_struct oraz
  * funkcji do inicjalizacji, obliczania prędkości, ustawiania zadanej prędkości oraz zatrzymywania silnika.
  * Zawiera również definicje stałych konfiguracyjnych związanych z enkoderem i sterowaniem silnikiem.
  */
@@ -17,7 +17,7 @@
 #include "cytronDriver.h"
 
 /**
- * @brief Struktura reprezentująca sterownik silnika.
+ * @brief Struktura reprezentująca instancję silnika.
  *
  * Zawiera informacje o timerze obsługującym enkoder, rozdzielczości enkodera, liczbie impulsów,
  * zmierzonej prędkości, zadanej prędkości, wartości PWM oraz strukturze PID i drivera silnika.
