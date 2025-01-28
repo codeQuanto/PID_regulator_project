@@ -70,6 +70,14 @@ void motor_calculate_speed(motor_struct *motor) {
 
 	motor->actual_PWM += output;
 
+	/* Maksymalna wartość PWM, ograniczenie wpisywania do struktury zbyt dużej wartości
+	 * Duże znaczenie przy nagłym odcięciu zasilania*/
+	if (motor->actual_PWM >= 1000) {
+		motor->actual_PWM = 1000;
+	} else if (motor->actual_PWM <= -1000) {
+		motor->actual_PWM = -1000;
+	}
+
 	if (motor->actual_PWM >= 0) {
 		Cytron_Set_Motor_Direction(&(motor->driver), cw);
 		Cytron_Set_Motor_Speed(&(motor->driver), motor->actual_PWM);
