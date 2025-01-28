@@ -125,15 +125,16 @@ static void I2C_LCD_Data(uint8_t I2C_LCD_InstanceIndex, uint8_t DATA)
  * @param Row Wiersz, w którym ma zostać ustawiony kursor (indeks zaczyna się od 0).
  */
 void I2C_LCD_DisplayMotorFormat(uint8_t I2C_LCD_InstanceIndex, int32_t value, uint8_t Col, uint8_t Row){
-    char mask[5]; //przygotowanie maski do wyswietlania liczb na stalych miejscach. Format: "_ _ _ _ '\0'" - znak, setki, dziesiatki, jedn, koniec linii
+    char mask[5]; 	/*przygotowanie maski do wyswietlania liczb na stalych miejscach.
+     	 	 	 	 *Format: "_ _ _ _ '\0'" - znak, setki, dziesiatki, jedn, koniec linii*/
 
-    //wstepne wypelnienie maski
+    /*wstepne wypelnienie maski*/
     for(int i = 0; i < 4; i++){
         mask[i] = ' ';
     }
     mask[4] = '\0';
 
-    //wpisanie liczby do maski
+    /*wpisanie liczby do maski*/
     if (value < 0) {
         mask[0] = '-';
         value = -value;

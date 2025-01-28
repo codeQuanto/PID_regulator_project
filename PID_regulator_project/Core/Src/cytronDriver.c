@@ -19,10 +19,10 @@
 void Cytron_Set_Motor_Direction(driver_struct *driver, Cytron_Direction direction) {
 	if (direction == cw) {
 		driver->working_channel = TIM_CHANNEL_1;
-		__HAL_TIM_SET_COMPARE(driver->timer, TIM_CHANNEL_2, 0); // Ustawienie wypełnienia PWM in2 na 0%
+		__HAL_TIM_SET_COMPARE(driver->timer, TIM_CHANNEL_2, 0); /* Ustawienie wypełnienia PWM in2 na 0%*/
 	} else if (direction == ccw) {
 		driver->working_channel = TIM_CHANNEL_2;
-		__HAL_TIM_SET_COMPARE(driver->timer, TIM_CHANNEL_1, 0); // Ustawienie wypełnienia PWM in1 na 0%
+		__HAL_TIM_SET_COMPARE(driver->timer, TIM_CHANNEL_1, 0); /* Ustawienie wypełnienia PWM in1 na 0%*/
 	}
 }
 

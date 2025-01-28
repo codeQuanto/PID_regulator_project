@@ -62,7 +62,7 @@ void motor_calculate_speed(motor_struct *motor) {
 	int output = pid_calculate(&(motor->pid_controller), motor->set_speed,
 			motor->measured_speed);
 
-	if (output >= 1000) { // Maksymalna wartość PWM
+	if (output >= 1000) { /* Maksymalna wartość PWM, ograniczenie zbyt gwałtownych zmian w jednym kroku*/
 		output = 1000;
 	} else if (output <= -1000) {
 		output = -1000;

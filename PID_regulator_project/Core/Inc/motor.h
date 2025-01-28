@@ -37,7 +37,7 @@ typedef struct {
 	pid_struct pid_controller;	///< Struktura kontrolera PID
 } motor_struct;
 
-// Definicje stałych konfiguracyjnych dla enkodera i silnika
+/* Definicje stałych konfiguracyjnych dla enkodera i silnika*/
 #define ENCODER_RESOLUTION				8  ///< Wynika z hardware'u
 #define TIMER_CONFIGURATION_BOTH_EDGES	4  ///< Liczba zliczeń na jeden impuls
 #define MOTOR_GEAR						120 ///< Przełożenie silnika

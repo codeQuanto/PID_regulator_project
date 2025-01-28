@@ -21,8 +21,8 @@
  * - ccw: przeciwnie do ruchu wskazówek zegara.
  */
 typedef enum {
-	cw = 0, // Clockwise
-	ccw = 1 // Counterclockwise
+	cw = 0, /* Clockwise*/
+	ccw = 1 /* Counterclockwise*/
 } Cytron_Direction;
 
 /**
@@ -32,10 +32,10 @@ typedef enum {
  * - working_channel: Aktualnie pracujący kanał timera.
  */
 typedef struct {
-	TIM_HandleTypeDef *timer; // Timer generujący PWM
-	Cytron_Direction direction; // Kierunek obrotów
+	TIM_HandleTypeDef *timer; /* Timer generujący PWM*/
+	Cytron_Direction direction; /* Kierunek obrotów*/
 
-	uint32_t working_channel; // Aktualnie pracujący kanał timera
+	uint32_t working_channel; /* Aktualnie pracujący kanał timera*/
 } driver_struct;
 
 /**

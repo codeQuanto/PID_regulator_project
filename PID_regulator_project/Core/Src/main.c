@@ -7,15 +7,17 @@
  * się obciążenia. Algorytm PID zapewnia precyzyjną kontrolę prędkości
  * i stabilność pracy silnika w różnych warunkach.
  *
- * Program obsługuje sterowanie silnikiem oraz przetwarzanie danych z ADC przy użyciu DMA. Timer generuje przerwanie co 100 ms, w którym
- * realizowane są operacje sterujące silnikiem oraz ustawiane flagi do dalszej komunikacji (UART oraz LCD). Pętla główna odpowiedzialna
- * jest za kontrolowanie tych flag i warunkowe obsłużenie UART oraz LCD. Nadrzędna flaga pochodząca od przycisku warunkuje wykonywanie
- * całego programu (nie blokuje kontrolera)
+ * Program obsługuje sterowanie silnikiem oraz przetwarzanie danych z ADC przy użyciu DMA.
+ * Timer generuje przerwanie co 100 ms, w którym realizowane są operacje sterujące silnikiem oraz
+ * ustawiane flagi do dalszej komunikacji (UART oraz LCD).
+ * Pętla główna odpowiedzialna jest za kontrolowanie tych flag i warunkowe obsłużenie UART oraz LCD.
+ * Nadrzędna flaga pochodząca od przycisku warunkuje wykonywanie całego programu (nie blokuje kontrolera)
  *
  * Kluczowe funkcje:
- * 1. **Timer Interrupt (100 ms)** -  uaktualnienie odczytu z DMA, sterowanie silnikiem oraz wystawianie flagi do komunikacji.
- * 2. **ADC w trybie DMA** - pobieranie danych z czujników w sposób bezpośredni, bez angażowania procesora, co pozwala na asynchroniczne
- *    zbieranie próbek.
+ * 1. **Timer Interrupt (100 ms)** -  uaktualnienie odczytu z DMA, sterowanie silnikiem oraz
+ * 		wystawianie flagi do komunikacji.
+ * 2. **ADC w trybie DMA** - pobieranie danych z czujników w sposób bezpośredni, bez angażowania procesora,
+ * 		co pozwala na asynchroniczne zbieranie próbek.
  * 3. **Pętla główna** - analizowanie flagi z przerwania, obsługa komunikacji.
  * 4. **EXTI Interrupt** - przerwanie działania programu, wyłączenie silnika
  *
@@ -92,7 +94,6 @@ char uart_buffer[100]; /**< Bufor do komunikacji UART */
 int lcd_refresh_counter = 0; /**< Licznik odświeżania wyświetlacza LCD */
 
 volatile static uint16_t adc_value[1];/**< Tablica przechowująca wartość odczytaną z ADC. */
-
 int new_speed = 0;/**< Obliczona prędkość silnika na podstawie odczytu z ADC. */
 
 volatile uint32_t last_EXTI_interrupt_time; /**< Zmienna do cyfrowego debouncingu przycisku */
@@ -600,19 +601,21 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
 	if (htim->Instance == htim21.Instance) {
 		if (flag_turn_on_off == 1) {
 
-			/* Oblicz nową prędkość na podstawie odczytu z ADC */
+			/* Oblicz nową prędkość na podstawie odczytu z ADC, zakres <-150,150>*/
 			new_speed = (adc_value[0] * 300) / 4095 - 150;
 			motor_set_RPM_speed(&motor_instance, new_speed);
 
+			/*Wysteruj nową prędkość*/
 			motor_calculate_speed(&motor_instance);
 
+			/*Przygotuj dane do wysłania przez UART*/
 			snprintf(uart_buffer, sizeof(uart_buffer),
 					"Set: %ld, Measured: %ld\r\n", motor_instance.set_speed,
 					motor_instance.measured_speed);
 			flag_send_data = 1;
 
 			lcd_refresh_counter++;
-			if (lcd_refresh_counter >= 5) { /**flaga odswiezania ekranu zglaszana co 5 przerwanie*/
+			if (lcd_refresh_counter >= 5) { /*flaga odswiezania ekranu zglaszana co 5 przerwanie*/
 				flag_refresh_LCD = 1;
 				lcd_refresh_counter = 0;
 			}
@@ -632,16 +635,16 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
  * @param GPIO_Pin Numer pinu, który wywołał przerwanie.
  */
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
-	/**po wcisnieciu przycisku*/
+	/*po wcisnieciu przycisku*/
 	if (GPIO_Pin == B1_Pin) {
 		uint32_t current_time = HAL_GetTick();
-		if (current_time - last_EXTI_interrupt_time > 50) { /**cyfrowy Debouncing 50 ms*/
-			/**jesli flaga wlaczenia byla rowna 0 to zmiana na 1*/
+		if (current_time - last_EXTI_interrupt_time > 50) { /*cyfrowy Debouncing 50 ms*/
+			/*jesli flaga wlaczenia byla rowna 0 to zmiana na 1*/
 			if (flag_turn_on_off == 0) {
-				motor_update_count(&motor_instance); /**zeby zresetowac licznik po wznowieniu*/
+				motor_update_count(&motor_instance); /*zeby zresetowac licznik po wznowieniu*/
 				flag_turn_on_off = 1;
 				I2C_LCD_Backlight(I2C_LCD_1);
-				/**jesli flaga wlaczenia byla rowna 1 to zastopuj silnik*/
+				/*jesli flaga wlaczenia byla rowna 1 to zastopuj silnik*/
 			} else if (flag_turn_on_off == 1) {
 				I2C_LCD_NoBacklight(I2C_LCD_1);
 				motor_stop(&motor_instance);

@@ -25,12 +25,12 @@ void pid_init(pid_struct *pid_data){
 	pid_data->previous_error = 0;  ///< Inicjalizacja błędu z poprzedniego cyklu
 	pid_data->total_error = 0;     ///< Inicjalizacja całkowitego błędu
 
-	// Ustawienie współczynników PID z wartości predefiniowanych
+	/* Ustawienie współczynników PID z wartości predefiniowanych*/
 	pid_data->Kp = MOTOR_Kp;
 	pid_data->Ki = MOTOR_Ki;
 	pid_data->Kd = MOTOR_Kd;
 
-	// Ustawienie limitów
+	/* Ustawienie limitów*/
 	pid_data->anti_windup_limit = MOTOR_ANTI_WINDUP;
 	pid_data->total_error_limit = MOTOR_TOTAL_ERROR_LIMIT;
 }
@@ -67,34 +67,34 @@ int pid_calculate(pid_struct *pid_data, int setpoint, int process_variable){
 	int error;
 	float p_term, i_term, d_term;
 
-	// Obliczanie uchybu
+	/* Obliczanie uchybu*/
 	error = setpoint - process_variable;
 
-	// Sumowanie uchybu do całkowitego błędu
+	/* Sumowanie uchybu do całkowitego błędu*/
 	pid_data->total_error += error;
 
-	// Ograniczenie maksymalnego błędu
+	/* Ograniczenie maksymalnego błędu*/
 	if (pid_data->total_error >= pid_data->total_error_limit) {
 		pid_data->total_error = pid_data->total_error_limit;
 	} else if (pid_data->total_error <= -pid_data->total_error_limit) {
 		pid_data->total_error = -pid_data->total_error_limit;
 	}
 
-	// Obliczanie odpowiedzi dla członów PID
+	/* Obliczanie odpowiedzi dla członów PID*/
 	p_term = (float) (pid_data->Kp * error);                            ///< Odpowiedź członu proporcjonalnego
 	i_term = (float) (pid_data->Ki * pid_data->total_error);             ///< Odpowiedź członu całkującego
 	d_term = (float) (pid_data->Kd * (error - pid_data->previous_error));///< Odpowiedź członu różniczkującego
 
-	// Ograniczenie członu całkującego, aby uniknąć "windup"
+	/* Ograniczenie członu całkującego, aby uniknąć "windup"*/
 	if (i_term >= pid_data->anti_windup_limit) {
 		i_term = pid_data->anti_windup_limit;
 	} else if (i_term <= -pid_data->anti_windup_limit) {
 		i_term = -pid_data->anti_windup_limit;
 	}
 
-	// Zapisanie bieżącego uchybu jako poprzedniego błędu
+	/* Zapisanie bieżącego uchybu jako poprzedniego błędu*/
 	pid_data->previous_error = error;
 
-	// Zwrócenie sumy wszystkich członów PID jako wartości sterującej
+	/* Zwrócenie sumy wszystkich członów PID jako wartości sterującej*/
 	return (int)(p_term + i_term + d_term);
 }
