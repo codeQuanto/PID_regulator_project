@@ -1,5 +1,0 @@
-<map id="motor_stop" name="motor_stop">
-<area shape="rect" id="Node000001" title="Zatrzymuje silnik." alt="" coords="5,5,92,32"/>
-<area shape="rect" id="Node000002" href="$cytron_driver_8c.html#a0a4dd2f511b824dc0aafc2e6cb4876ff" title="Ustawia prędkość obrotów silnika." alt="" coords="140,5,311,32"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="92,16,124,16,124,21,92,21"/>
-</map>
