@@ -13,6 +13,6 @@ Dodatkowo, dane są monitorowane w czasie rzeczywistym przy pomocy STM32CubeMoni
 Projekt obejmuje również stworzenie własnych bibliotek do sterowania silnikiem, algorytmu PID oraz obsługi silnika,
 a także wykorzystanie gotowej biblioteki do obsługi LCD.
 
-Dokumentacja projektu znajduje się w katalogu [docs2](./docs2),
-w szczególności dokumentacja wygenerowana w Doxygen znajduje się w pliku [index.html](https://codequanto.github.io/PID_regulator_project/).
+Dokumentacja projektu znajduje się w katalogu [docs2](./docs2), w tym [zdjecia pogladowe](.docs2/images) 
+W szczególności dokumentacja wygenerowana w Doxygen znajduje się w pliku [index.html](https://codequanto.github.io/PID_regulator_project/).
 Była to moja pierwsza styczność z Doxygen dlatego dokumentacja pozostawia jeszcze wiele do życzenia;) 
