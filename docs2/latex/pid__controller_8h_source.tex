@@ -1,0 +1,36 @@
+\doxysection{pid\+\_\+controller.\+h}
+\hypertarget{pid__controller_8h_source}{}\label{pid__controller_8h_source}\index{C:/Users/Igor/STM32CubeIDE/workspace\_1.16.1/PID\_regulator\_project/Core/Inc/pid\_controller.h@{C:/Users/Igor/STM32CubeIDE/workspace\_1.16.1/PID\_regulator\_project/Core/Inc/pid\_controller.h}}
+\mbox{\hyperlink{pid__controller_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ }
+\DoxyCodeLine{00012\ }
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#ifndef\ INC\_PID\_CONTROLLER\_H\_}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#define\ INC\_PID\_CONTROLLER\_H\_}}
+\DoxyCodeLine{00015\ }
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\#include\ "{}stm32l073xx.h"{}}}
+\DoxyCodeLine{00017\ }
+\DoxyCodeLine{00024\ \textcolor{keyword}{typedef}\ \textcolor{keyword}{struct}\{}
+\DoxyCodeLine{00025\ \ \ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{structpid__struct_a35f87acdc28ee18c2d5fcfee1435ef0e}{previous\_error}};\ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00026\ \ \ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{structpid__struct_aa6f2a6978aa01a4845bcaa3df4510088}{total\_error}};\ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00027\ \ \ \ \ \textcolor{keywordtype}{float}\ \mbox{\hyperlink{structpid__struct_a09cfc766a233ad617270562cc4146d07}{Kp}};\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00028\ \ \ \ \ \textcolor{keywordtype}{float}\ \mbox{\hyperlink{structpid__struct_a59fac16f568541187ff485c4c47b0ec5}{Ki}};\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00029\ \ \ \ \ \textcolor{keywordtype}{float}\ \mbox{\hyperlink{structpid__struct_a98268d71502ba080d88a9b1f50fdbe80}{Kd}};\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00030\ \ \ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{structpid__struct_a4b8af77f72082d4e201211459d2c6f2e}{anti\_windup\_limit}};\ \ \ \ \ }
+\DoxyCodeLine{00031\ \ \ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{structpid__struct_ab221092dc512e3231a42f5efb0fa616f}{total\_error\_limit}};\ \ \ \ \ }
+\DoxyCodeLine{00032\ \}\mbox{\hyperlink{structpid__struct}{pid\_struct}};}
+\DoxyCodeLine{00033\ }
+\DoxyCodeLine{00034\ \textcolor{preprocessor}{\#define\ MOTOR\_Kp\ 1.2\ \ \ \ \ \ \ \ \ \ \ \ }}
+\DoxyCodeLine{00035\ \textcolor{preprocessor}{\#define\ MOTOR\_Ki\ 0.1\ \ \ \ \ \ \ \ \ \ \ \ }}
+\DoxyCodeLine{00036\ \textcolor{preprocessor}{\#define\ MOTOR\_Kd\ 0.2\ \ \ \ \ \ \ \ \ \ \ \ }}
+\DoxyCodeLine{00037\ \textcolor{preprocessor}{\#define\ MOTOR\_ANTI\_WINDUP\ 1000\ \ }}
+\DoxyCodeLine{00038\ \textcolor{preprocessor}{\#define\ MOTOR\_TOTAL\_ERROR\_LIMIT\ 150\ \ }}
+\DoxyCodeLine{00039\ }
+\DoxyCodeLine{00048\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{pid__controller_8h_ae5334be9eb2fb0dd92ad20c7f2dbf596}{pid\_init}}(\mbox{\hyperlink{structpid__struct}{pid\_struct}}\ *pid\_data);}
+\DoxyCodeLine{00049\ }
+\DoxyCodeLine{00058\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{pid__controller_8h_adbef2849941170b93aeb2215a11e72fc}{pid\_reset}}(\mbox{\hyperlink{structpid__struct}{pid\_struct}}\ *pid\_data);}
+\DoxyCodeLine{00059\ }
+\DoxyCodeLine{00073\ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{pid__controller_8h_a160cf38280e0cde3978ea5b2f962fe6c}{pid\_calculate}}(\mbox{\hyperlink{structpid__struct}{pid\_struct}}\ *pid\_data,\ \textcolor{keywordtype}{int}\ setpoint,\ \textcolor{keywordtype}{int}\ process\_variable);}
+\DoxyCodeLine{00074\ }
+\DoxyCodeLine{00075\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{/*\ INC\_PID\_CONTROLLER\_H\_\ */}\textcolor{preprocessor}{}}
+
+\end{DoxyCode}

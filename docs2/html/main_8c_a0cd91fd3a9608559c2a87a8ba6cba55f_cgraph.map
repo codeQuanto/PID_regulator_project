@@ -1,0 +1,9 @@
+<map id="HAL_GPIO_EXTI_Callback" name="HAL_GPIO_EXTI_Callback">
+<area shape="rect" id="Node000001" title="Callback do obsługi przerwania zewnętrznego (przycisk)." alt="" coords="5,31,188,57"/>
+<area shape="rect" id="Node000002" href="$motor_8c.html#aa81662513da9526725dac5d06120ca71" title="Zatrzymuje silnik." alt="" coords="262,5,348,32"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="188,30,246,23,247,28,189,36"/>
+<area shape="rect" id="Node000004" href="$motor_8c.html#aa27a2c0a9400261546aa209af25dd3c0" title="Aktualizuje licznik impulsów enkodera." alt="" coords="236,56,375,83"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="189,52,221,56,220,62,188,58"/>
+<area shape="rect" id="Node000003" href="$cytron_driver_8c.html#a0a4dd2f511b824dc0aafc2e6cb4876ff" title="Ustawia prędkość obrotów silnika." alt="" coords="423,5,594,32"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="349,16,408,16,408,21,349,21"/>
+</map>

@@ -1,0 +1,48 @@
+\doxysection{motor.\+h}
+\hypertarget{motor_8h_source}{}\label{motor_8h_source}\index{C:/Users/Igor/STM32CubeIDE/workspace\_1.16.1/PID\_regulator\_project/Core/Inc/motor.h@{C:/Users/Igor/STM32CubeIDE/workspace\_1.16.1/PID\_regulator\_project/Core/Inc/motor.h}}
+\mbox{\hyperlink{motor_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ }
+\DoxyCodeLine{00011\ }
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#ifndef\ INC\_MOTOR\_H\_}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#define\ INC\_MOTOR\_H\_}}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#include\ "{}stm32l0xx.h"{}}}
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{pid__controller_8h}{pid\_controller.h}}"{}}}
+\DoxyCodeLine{00017\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{cytron_driver_8h}{cytronDriver.h}}"{}}}
+\DoxyCodeLine{00018\ }
+\DoxyCodeLine{00025\ \textcolor{keyword}{typedef}\ \textcolor{keyword}{struct\ }\{}
+\DoxyCodeLine{00026\ \ \ \ \ TIM\_HandleTypeDef\ *\mbox{\hyperlink{structmotor__struct_a30b15aedcc086ca7abb69f7ac012ce64}{timer}};\ \ }
+\DoxyCodeLine{00027\ }
+\DoxyCodeLine{00028\ \ \ \ \ uint16\_t\ \mbox{\hyperlink{structmotor__struct_a161c40a17ffcd064b8ef112aca00a3ba}{resolution}};\ \ \ \ \ \ }
+\DoxyCodeLine{00029\ }
+\DoxyCodeLine{00030\ \ \ \ \ int32\_t\ \mbox{\hyperlink{structmotor__struct_aa45e5eaef9d634431c01a5fcdc7f4779}{pulse\_count}};\ \ \ \ \ }
+\DoxyCodeLine{00031\ \ \ \ \ int32\_t\ \mbox{\hyperlink{structmotor__struct_ae63ca99a202532f263321cef4e647511}{measured\_speed}};\ \ \ \ \ \ \ }
+\DoxyCodeLine{00032\ \ \ \ \ int32\_t\ \mbox{\hyperlink{structmotor__struct_a2ccc0658a67b5c8155715bdcc01b35ab}{set\_speed}};\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00033\ }
+\DoxyCodeLine{00034\ \ \ \ \ int32\_t\ \mbox{\hyperlink{structmotor__struct_a36e1e3220014cb6046e7a7366fad9de8}{actual\_PWM}};\ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00035\ }
+\DoxyCodeLine{00036\ \ \ \ \ \mbox{\hyperlink{structdriver__struct}{driver\_struct}}\ \mbox{\hyperlink{structmotor__struct_ac3c3b38fa3d17170b3465354fbb8adf9}{driver}};\ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00037\ \ \ \ \ \mbox{\hyperlink{structpid__struct}{pid\_struct}}\ \mbox{\hyperlink{structmotor__struct_a0d72b64933cfd39118bb5e63224b9a5e}{pid\_controller}};\ \ }
+\DoxyCodeLine{00038\ \}\ \mbox{\hyperlink{structmotor__struct}{motor\_struct}};}
+\DoxyCodeLine{00039\ }
+\DoxyCodeLine{00040\ \textcolor{comment}{/*\ Definicje\ stałych\ konfiguracyjnych\ dla\ enkodera\ i\ silnika*/}}
+\DoxyCodeLine{00041\ \textcolor{preprocessor}{\#define\ ENCODER\_RESOLUTION\ \ \ \ \ \ \ \ \ \ \ \ \ \ 8\ \ }}
+\DoxyCodeLine{00042\ \textcolor{preprocessor}{\#define\ TIMER\_CONFIGURATION\_BOTH\_EDGES\ \ 4\ \ }}
+\DoxyCodeLine{00043\ \textcolor{preprocessor}{\#define\ MOTOR\_GEAR\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 120\ }}
+\DoxyCodeLine{00044\ \textcolor{preprocessor}{\#define\ TIMER\_INTERRUPT\_FREQUENCY\ \ \ \ \ \ \ 10\ }}
+\DoxyCodeLine{00045\ \textcolor{preprocessor}{\#define\ SECONDS\_IN\_MINUTE\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 60\ }}
+\DoxyCodeLine{00046\ }
+\DoxyCodeLine{00055\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{motor_8h_ad3bea19173b3bbe7f47c9aecc35fbe04}{motor\_init}}(\mbox{\hyperlink{structmotor__struct}{motor\_struct}}\ *motor,\ TIM\_HandleTypeDef\ *encoder\_tim);}
+\DoxyCodeLine{00056\ }
+\DoxyCodeLine{00065\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{motor_8h_aa27a2c0a9400261546aa209af25dd3c0}{motor\_update\_count}}(\mbox{\hyperlink{structmotor__struct}{motor\_struct}}\ *motor);}
+\DoxyCodeLine{00066\ }
+\DoxyCodeLine{00075\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{motor_8h_a2357849fee1127ea55d647ccb81fc77e}{motor\_calculate\_speed}}(\mbox{\hyperlink{structmotor__struct}{motor\_struct}}\ *motor);}
+\DoxyCodeLine{00076\ }
+\DoxyCodeLine{00085\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{motor_8h_ac398c131dbe7b2cb139274a747157293}{motor\_set\_RPM\_speed}}(\mbox{\hyperlink{structmotor__struct}{motor\_struct}}\ *motor,\ \textcolor{keywordtype}{int}\ RPM\_speed);}
+\DoxyCodeLine{00086\ }
+\DoxyCodeLine{00095\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{motor_8h_aa81662513da9526725dac5d06120ca71}{motor\_stop}}(\mbox{\hyperlink{structmotor__struct}{motor\_struct}}\ *motor);}
+\DoxyCodeLine{00096\ }
+\DoxyCodeLine{00097\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{/*\ INC\_MOTOR\_H\_\ */}\textcolor{preprocessor}{}}
+
+\end{DoxyCode}
