@@ -4,7 +4,7 @@ Projekt implementuje algorytm PID do precyzyjnej kontroli prędkości obrotowej 
 Został opracowany w środowisku STM32Cube IDE, wykorzystując mikrokontroler Nucleo L073RZ i bibliotekę HAL.
 
 W projekcie wykorzystane zostały następujące peryferia:
-  -Timery do generowania PWM, odczytu enkodera i generowania przerwań
+  -Timery do generowania PWM, odczytu enkodera i generowania przerwań\n
   -ADC w trybie DMA do odczytu wartości z potencjometra
   -UART do komunikacji z komputerem
   -I2C do wyświetlania danych na ekranie LCD
